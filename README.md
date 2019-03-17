@@ -2,15 +2,15 @@
 
 ## Functionality
 ## Module 1 Parsing the request and getting the data
-	* support both HTTP and HTTPS protocol
-	* handle concurrent connection
-	* parsing the incoming request into the representation of client request in the program
+	- support both HTTP and HTTPS protocol
+	- handle concurrent connection
+	- parsing the incoming request into the representation of client request in the program
 
-##Module 2 Sending the response
-	* checking if the data is present in proxy
+## Module 2 Sending the response
+	- checking if the data is present in proxy
 		* if not, request the data and store it in proxy
 		* if present, get the data and return to Module 2  	
-	* maintain the headers to respond
+	- maintain the headers to respond
 	* return the response back with the updated header
 
 ## Module 3 Optimized Caching 
