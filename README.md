@@ -1,7 +1,6 @@
 # NetworksFinalProject
 
-##Modules
-
+## Functionality
 ## Module 1 Parsing the request and getting the data
 	* support both HTTP and HTTPS protocol
 	* handle concurrent connection
@@ -14,7 +13,7 @@
 	* maintain the headers to respond
 	* return the response back with the updated header
 
-## Module 3 Caching
+## Module 3 Optimized Caching 
 	* optimize the caching far faster data fetching -- hashtable
 	* create following endpoints of caching
 		* get the data based given url
@@ -24,6 +23,16 @@
 		* print all elements of cache
 		* return least accessed
 	
-	
-## Module 5 Build Transcoding Support in your proxy
+## Module 4 Build Transcoding Support in your proxy
+	* build following transcoding features
+		* option to recieve only plain html text without image
+		* if requested link is an image, option to get lower resolution image
 
+## Module 5 Limiting Bandwidth
+	* limit bandwith for following reasons
+		* requests huge amount of data within certain period of time 
+		* requests data frequently
+## Module 6 Advanced Caching Policy
+	* if a website has a link, cache the links
+	* cache the static images embedded in the website
+		* return the images based on user option of getting plain text or text with image
