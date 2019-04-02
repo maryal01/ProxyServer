@@ -1,6 +1,6 @@
 /*
-    TODO: remove 'exit()'s and 'error()'s to allow concurrent user access
-
+    TODO: 
+    QUESTION: Is it okay that there's no CSS on pages?
 */
 
 #include <stdio.h>
@@ -18,7 +18,7 @@
 
 /* pending connection queue's max length */
 #define BACKLOG 20
-#define BUFSIZE 2048
+#define BUFSIZE 1000000
 /* max response (webpage) size */
 #define OBJECTSIZE 10000000
 /* size of cache */
@@ -28,16 +28,24 @@
 #define DEFAULTPORT 80
 #define HEADERSIZE 64000
 #define SIZEPADDING 10
+#define CONCURRENTCONNECTIONS 20
+#define GET 0
+#define CONNECT 1
 
-/* method can be either GET or CONNECT
-   full_data is the full request message from client
-*/
+/* full_data is the full request message from client */
 typedef struct client_request {
-        char method[10];
         char hostname[OBJECTNAMESIZE]; 
         int port;
         char *full_data;
 } *client_request;
+
+/* client-server connection pairs */
+/* method can be GET or CONNECT  */
+typedef struct connection {
+        int method;
+        int clientfd;
+        int serverfd; 
+} *connection;
 
 /* single cache line */
 typedef struct cache_line {
@@ -51,19 +59,27 @@ void error(char *msg);
 void ensure_argument_validity(int argc, char *executable_name);
 int create_socket(uint16_t port);
 void setup_cache(cache_line *cache);
-int get_response(char **response, char *full_data, cache_line *cache);
+void setup_connections(connection *connections);
+bool connection_exists(int fd, connection *connections);
 int build_client_request(char *full_data, client_request *request);
 int set_portno(char *full_data, int *port);
 int set_hostname(char *full_data, char *hostname);
 int get_field_value(char *HTTP_request, char *field, char *storage);
 int string_to_int_num(char *content);
 int power(unsigned int a, unsigned int b);
-int retrieve_from_server(char *full_data, client_request request, char **response);
+bool CONNECT_request(char *full_data);
+int establish_connection_with_server(int *serverfd, client_request request);
+int partner(int fd, connection *connections);
+void create_connection_pair(int clientfd, int serverfd, int method, connection *connections);
+void remove_connection_pair(int fd, connection *connections);
 int total_response_size(char *object);
+void send_HTTP_OK(int clientfd);
 
 int main(int argc, char *argv[])
 {
     int i, m;
+    int partnerfd;
+    int serverfd;
     int server, port;
     int new_client, client_size;
     struct sockaddr_in clientname;
@@ -71,7 +87,10 @@ int main(int argc, char *argv[])
     char buffer[BUFSIZE];
     char *response;
     int response_size;
+    int status_code;
     cache_line cache[CACHELINES];
+    connection connections[CONCURRENTCONNECTIONS];
+    client_request request;
 
     ensure_argument_validity(argc, argv[0]);
     port = atoi(argv[1]);
@@ -83,6 +102,7 @@ int main(int argc, char *argv[])
     FD_SET (server, &active_fd_set);
 
     setup_cache(cache);
+    setup_connections(connections);
 
     while (true) {
         tv.tv_sec = 0;
@@ -96,6 +116,7 @@ int main(int argc, char *argv[])
             if (FD_ISSET (i, &read_fd_set)) {
                 if (i == server)
                 {
+                    fprintf(stderr, "connected\n");
                     client_size = sizeof(clientname);
                     new_client = accept (server,
                                 (struct sockaddr *) &clientname,
@@ -107,26 +128,80 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
+                    fprintf(stderr, "received some data\n");
                     bzero(buffer, BUFSIZE);
                     m = read(i, buffer, BUFSIZE);
                     if (m <= 0) {
+                        fprintf(stderr,"read 0 or less bytes\n");
+                        if (connection_exists(i, connections)) {
+                            partnerfd = partner(i, connections);
+                            close(partnerfd);
+                            FD_CLR(partnerfd, &active_fd_set);
+                            remove_connection_pair(i, connections);
+                        }
                         close(i);
                         FD_CLR(i, &active_fd_set);
                         continue;
                     }
 
-                    m = get_response(&response, buffer, cache);
-                    if (m == -1) {
-                        close(i);
-                        FD_CLR(i, &active_fd_set);
+                    if (connection_exists(i, connections)) {
+                        fprintf(stderr, "connection exists\n");
+                        partnerfd = partner(i, connections);
+                        m = write(partnerfd, buffer, m);
+                        if (m < 0) {
+                            remove_connection_pair(i, connections);
+                            close(i);
+                            partnerfd = partner(i, connections);
+                            close(partnerfd);
+                            continue;
+                        }
                     } else {
-                        response_size = total_response_size(response);
-                        m = write(i, response, response_size);
-                        if (m < 0) error("ERROR writing to client");
+                        fprintf(stderr, "connection doesn't exist\n");
+                        status_code = build_client_request(buffer, &request);
+                        if (status_code == -1) {
+                            if (request)
+                                free(request);
+                            close(i);
+                            FD_CLR(i, &active_fd_set);
+                            continue;
+                        }
+                        if (CONNECT_request(buffer)) {
+                            fprintf(stderr, "CONNECT request\n");
+                            status_code = establish_connection_with_server(&serverfd, request);
+                            if (status_code == -1) {
+                                free(request);
+                                close(i);
+                                FD_CLR(i, &active_fd_set);
+                                continue;
+                            }
+                            FD_SET (serverfd, &active_fd_set);
+                            create_connection_pair(i, serverfd, CONNECT, connections);
+                            send_HTTP_OK(i);
+                        } else {
+                            fprintf(stderr, "GET request\n");
+                            status_code = establish_connection_with_server(&serverfd, request);
+                            if (status_code == -1) {
+                                free(request);
+                                close(i);
+                                FD_CLR(i, &active_fd_set);
+                                continue;
+                            }
+                            FD_SET (serverfd, &active_fd_set);
+                            create_connection_pair(i, serverfd, GET, connections);
+                            m = write(serverfd, buffer, strlen(buffer));
+                            if (m < 0) {
+                                free(request);
+                                remove_connection_pair(serverfd, connections);
+                                close(i);
+                                partnerfd = partner(i, connections);
+                                close(partnerfd);
+                                continue;
+                            }
+                            fprintf(stderr, "request sent\n");
+                        }
+                        if (request)
+                                free(request);
                     }
-                    if (response)
-                            free(response);
-                    
                 }
             }
     }
@@ -179,30 +254,64 @@ void setup_cache(cache_line *cache)
     }
 }
 
-/* if something went wrong returns -1 and sets response to NULL */
-int get_response(char **response, char *full_data, cache_line *cache)
+void setup_connections(connection *connections)
 {
-    int status_code;
-    char *server_response;
-    client_request request;
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        connections[i] = NULL;
+    }
+}
 
-    status_code = build_client_request(full_data, &request);
-    if (status_code == -1) {
-        free(request);
-        return -1;
+int partner(int fd, connection *connections)
+{
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        if (connections[i] != NULL) {
+            if (connections[i]->clientfd == fd)
+                return connections[i]->serverfd;
+            if (connections[i]->serverfd == fd)
+                return connections[i]->clientfd;
+        }
+    }
+}
+
+void remove_connection_pair(int fd, connection *connections)
+{
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        if (connections[i] != NULL) {
+            if (connections[i]->clientfd == fd || connections[i]->serverfd == fd) {
+                free(connections[i]);
+                connections[i] = NULL;
+            }
+        }
+    }
+}
+
+void create_connection_pair(int clientfd, int serverfd, int method, connection *connections)
+{
+    connection tmp = malloc(sizeof(*tmp));
+    assert(tmp);
+    tmp->clientfd = clientfd;
+    tmp->serverfd = serverfd;
+    tmp->method = method;
+
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        if (connections[i] == NULL) {
+            connections[i] = tmp;
+            return;
+        }
     }
 
-    status_code = retrieve_from_server(request->full_data, request, &server_response);
-    if (status_code == -1) {
-        if (server_response)
-            free(server_response);
-        return -1;
+}
+
+bool connection_exists(int fd, connection *connections)
+{
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        if (connections[i] != NULL) {
+            if (connections[i]->clientfd == fd || connections[i]->serverfd == fd)
+            return true;
+        }
     }
 
-    free(request);
-
-    *response = server_response;
-    return 1;
+    return false;
 }
 
 /* if something went wrong returns -1 */
@@ -218,7 +327,6 @@ int build_client_request(char *full_data, client_request *request)
     bzero(&(tmp->hostname), OBJECTNAMESIZE);
     status_code = set_hostname(full_data, tmp->hostname);
     if (status_code == -1) return -1;
-    bzero(&(tmp->method), 10);
     *request = tmp;
     return 1;
 }
@@ -342,20 +450,26 @@ int set_hostname(char *full_data, char *hostname)
     return 1;
 }
 
-
-int retrieve_from_server(char *full_data, client_request request, char **response)
+bool CONNECT_request(char *full_data)
 {
-    int serverfd;
+    if (full_data[0] == 'C' && full_data[1] == 'O' && full_data[2] == 'N' && 
+    full_data[3] == 'N' && full_data[4] == 'E' && full_data[5] == 'C' && 
+    full_data[6] == 'T')
+        return true;
+
+    return false;
+}
+
+/* returns -1 if something goes wrong */
+int establish_connection_with_server(int *serverfd, client_request request)
+{
     struct hostent *server;
     struct sockaddr_in server_addr;
-    char buffer[BUFSIZE];
-    char *object_buffer;
-    int m;
 
     /* create a new socket on the proxy server for
     server connection */
-    serverfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (serverfd < 0) error("ERROR opening socket to server");
+    *serverfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (*serverfd < 0) error("ERROR opening socket to server");
     server = gethostbyname(request->hostname);
     if (server == NULL) {
         fprintf(stderr,"ERROR, host not found\n");
@@ -371,36 +485,11 @@ int retrieve_from_server(char *full_data, client_request request, char **respons
             server->h_length);
     server_addr.sin_port = htons(request->port);
     /* establish a connection to the server */
-    if (connect(serverfd, (struct sockaddr *) &server_addr, 
-        sizeof(server_addr)) < 0) error("ERROR connecting to the server");
-    
-    m = write(serverfd, full_data, strlen(full_data));
-    if (m < 0) error("ERROR writing to server socket");
-    /* allocate memory to read/write large HTTP objects */
-    object_buffer = malloc(OBJECTSIZE * sizeof(char));
-    assert(object_buffer);
-
-    char *HTTP_response = malloc(OBJECTSIZE * sizeof(char));
-    assert(HTTP_response);
-    bzero(HTTP_response, OBJECTSIZE);
-
-    int index = 0;
-    bzero(object_buffer, OBJECTSIZE);
-    m = read(serverfd, object_buffer, OBJECTSIZE);
-    if (m < 0) error("ERROR reading from server socket");
-    while (m > 0) {
-        memcpy(&HTTP_response[index], object_buffer, m);
-        index += m;
-        m = read(serverfd, object_buffer, OBJECTSIZE);    
-    }
-
-    free(object_buffer);
-
-    *response = HTTP_response;
-    return 1;
+    if (connect(*serverfd, (struct sockaddr *) &server_addr, 
+        sizeof(server_addr)) < 0) 
+        return -1;
 }
 
-/* if something goes wrong returns size 0 */
 int total_response_size(char *object)
 {
     char *response_header = calloc(HEADERSIZE, sizeof(char));
@@ -424,7 +513,7 @@ int total_response_size(char *object)
     if (status == -1) {
         fprintf(stderr, "Invalid Request\n");
         free(content);
-        return 0;
+        exit(1);
     }
 
     total_size = header_size + string_to_int_num(content) + SIZEPADDING;
@@ -432,4 +521,16 @@ int total_response_size(char *object)
     free(content);
 
     return total_size;
+}
+
+void send_HTTP_OK(int clientfd)
+{
+    int m;
+    char *HTTP_OK = "HTTP/1.1 200 Connection Established\r\n\r\n";
+    fprintf(stderr, "strlen(HTTP_OK)=%d\n", strlen(HTTP_OK));
+    m = write(clientfd, HTTP_OK, strlen(HTTP_OK));
+    if (m < 0) 
+        close(clientfd);
+    
+    fprintf(stderr, "HTTP_OK=%s\n", HTTP_OK);
 }
