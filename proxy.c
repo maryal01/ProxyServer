@@ -1,6 +1,13 @@
 /*
     TODO: 
-    QUESTION: Is it okay that there's no CSS on pages?
+    GET request's header lists url as: http://www.google.com/
+    while
+    CONNECT requests's header lists url as: www.google.com:443
+    so
+    when parsing the header for the resource url, different strings will
+    be generated. This can be a problem when looking up the cache. Imagine:
+    someone visits http://www.google.com and then www.google.com:443. Cache
+    won't come into play, even though it theoretically should.
 */
 
 #include <stdio.h>
@@ -32,6 +39,26 @@
 #define GET 0
 #define CONNECT 1
 
+/* Manish's structs */
+#define CACHE_SIZE 50
+#define URL_SIZE 100
+#define CONTENT_SIZE 100
+
+typedef struct CacheBlock{
+    char* url;
+    char* content;
+    time_t last_accessed;
+    int port_number;
+    void* next_element;
+} *CacheBlock;
+
+typedef struct Cache {
+    CacheBlock cache[CACHE_SIZE];
+    int total_elements;
+    int last_accessed;
+} *Cache;
+/* Manish's code */
+
 /* full_data is the full request message from client */
 typedef struct client_request {
         char hostname[OBJECTNAMESIZE]; 
@@ -43,11 +70,13 @@ typedef struct client_request {
 /* method can be GET or CONNECT  */
 typedef struct connection {
         int method;
+        char *url;
         int clientfd;
         int serverfd; 
 } *connection;
 
-/* single cache line */
+/* single cache line (will be removed once Manish implements his cache with
+cacheblocks) */
 typedef struct cache_line {
         char *object;
         /* etc ... */
@@ -70,10 +99,22 @@ int power(unsigned int a, unsigned int b);
 bool CONNECT_request(char *full_data);
 int establish_connection_with_server(int *serverfd, client_request request);
 int partner(int fd, connection *connections);
-void create_connection_pair(int clientfd, int serverfd, int method, connection *connections);
+void create_connection_pair(int clientfd, int serverfd, int method, char* url, connection *connections);
 void remove_connection_pair(int fd, connection *connections);
 int total_response_size(char *object);
 void send_HTTP_OK(int clientfd);
+char *get_url(char *HTTP_request);
+/* returns 0 for GET, and 1 for CONNECT */
+int connection_pair_method(int fd, connection *connections);
+char *connection_pair_url(int fd, connection *connections);
+
+
+/* Manish's functions */
+Cache createCache();
+uint32_t jenkinsHashFunction(char *key);
+char* getFromCache(Cache cache, char* url);
+void insertToCache(Cache cache, char* url, char* content);
+/* Manish's functions */
 
 int main(int argc, char *argv[])
 {
@@ -88,6 +129,8 @@ int main(int argc, char *argv[])
     char *response;
     int response_size;
     int status_code;
+    char *objectFromCache;
+    char *url;
     cache_line cache[CACHELINES];
     connection connections[CONCURRENTCONNECTIONS];
     client_request request;
@@ -103,6 +146,7 @@ int main(int argc, char *argv[])
 
     setup_cache(cache);
     setup_connections(connections);
+    Cache proxyCache = createCache();
 
     while (true) {
         tv.tv_sec = 0;
@@ -146,6 +190,10 @@ int main(int argc, char *argv[])
 
                     if (connection_exists(i, connections)) {
                         fprintf(stderr, "connection exists\n");
+                        if(connection_pair_method(i, connections) == GET) {
+                            fprintf(stderr, "inserting to cache\n");
+                            insertToCache(proxyCache, connection_pair_url(i, connections), buffer);
+                        }
                         partnerfd = partner(i, connections);
                         m = write(partnerfd, buffer, m);
                         if (m < 0) {
@@ -156,6 +204,7 @@ int main(int argc, char *argv[])
                             continue;
                         }
                     } else {
+                        fprintf(stderr, "%s\n", buffer);
                         fprintf(stderr, "connection doesn't exist\n");
                         status_code = build_client_request(buffer, &request);
                         if (status_code == -1) {
@@ -165,6 +214,8 @@ int main(int argc, char *argv[])
                             FD_CLR(i, &active_fd_set);
                             continue;
                         }
+                        url = get_url(buffer);
+                        fprintf(stderr, "url=%s\n", url);
                         if (CONNECT_request(buffer)) {
                             fprintf(stderr, "CONNECT request\n");
                             status_code = establish_connection_with_server(&serverfd, request);
@@ -175,29 +226,36 @@ int main(int argc, char *argv[])
                                 continue;
                             }
                             FD_SET (serverfd, &active_fd_set);
-                            create_connection_pair(i, serverfd, CONNECT, connections);
+                            create_connection_pair(i, serverfd, CONNECT, url, connections);
                             send_HTTP_OK(i);
                         } else {
                             fprintf(stderr, "GET request\n");
-                            status_code = establish_connection_with_server(&serverfd, request);
-                            if (status_code == -1) {
-                                free(request);
-                                close(i);
-                                FD_CLR(i, &active_fd_set);
-                                continue;
+                            objectFromCache = getFromCache(proxyCache, url);
+                            if (objectFromCache) {
+                                fprintf(stderr, "resource found in cache \n");
+
+                            } else {
+                                fprintf(stderr, "resource NOT found in cache \n");
+                                status_code = establish_connection_with_server(&serverfd, request);
+                                if (status_code == -1) {
+                                    free(request);
+                                    close(i);
+                                    FD_CLR(i, &active_fd_set);
+                                    continue;
+                                }
+                                FD_SET (serverfd, &active_fd_set);
+                                create_connection_pair(i, serverfd, GET, url, connections);
+                                m = write(serverfd, buffer, strlen(buffer));
+                                if (m < 0) {
+                                    free(request);
+                                    remove_connection_pair(serverfd, connections);
+                                    close(i);
+                                    partnerfd = partner(i, connections);
+                                    close(partnerfd);
+                                    continue;
+                                }
+                                fprintf(stderr, "request sent\n");
                             }
-                            FD_SET (serverfd, &active_fd_set);
-                            create_connection_pair(i, serverfd, GET, connections);
-                            m = write(serverfd, buffer, strlen(buffer));
-                            if (m < 0) {
-                                free(request);
-                                remove_connection_pair(serverfd, connections);
-                                close(i);
-                                partnerfd = partner(i, connections);
-                                close(partnerfd);
-                                continue;
-                            }
-                            fprintf(stderr, "request sent\n");
                         }
                         if (request)
                                 free(request);
@@ -278,6 +336,7 @@ void remove_connection_pair(int fd, connection *connections)
     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
         if (connections[i] != NULL) {
             if (connections[i]->clientfd == fd || connections[i]->serverfd == fd) {
+                free(connections[i]->url);
                 free(connections[i]);
                 connections[i] = NULL;
             }
@@ -285,13 +344,14 @@ void remove_connection_pair(int fd, connection *connections)
     }
 }
 
-void create_connection_pair(int clientfd, int serverfd, int method, connection *connections)
+void create_connection_pair(int clientfd, int serverfd, int method, char *url, connection *connections)
 {
     connection tmp = malloc(sizeof(*tmp));
     assert(tmp);
     tmp->clientfd = clientfd;
     tmp->serverfd = serverfd;
     tmp->method = method;
+    tmp->url = url;
 
     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
         if (connections[i] == NULL) {
@@ -533,4 +593,132 @@ void send_HTTP_OK(int clientfd)
         close(clientfd);
     
     fprintf(stderr, "HTTP_OK=%s\n", HTTP_OK);
+}
+
+// char *get_url(char *HTTP_request)
+// {
+//     int starting_point;
+//     int request_size = strlen(HTTP_request);
+//     char *server_path = calloc(OBJECTNAMESIZE, sizeof(char));
+//     assert(server_path);
+
+//     for (int i = 4; i < request_size; i++) {
+//         if (HTTP_request[i] == ' ') {
+//             server_path[i - 4] = '\0';
+//             break;
+//         }
+//         server_path[i - 4] = HTTP_request[i];
+//     }  
+
+//     return server_path;
+// }
+
+char *get_url(char *HTTP_request)
+{
+    int starting_point;
+    int request_size = strlen(HTTP_request);
+    char *server_path = calloc(OBJECTNAMESIZE, sizeof(char));
+    assert(server_path);
+
+    for (int j = 0; j < request_size; j++) {
+        if (HTTP_request[j] == ' ') {
+            starting_point = j + 1;
+            break;
+        }
+    }
+
+    for (int i = starting_point; i < request_size; i++) {
+        if (HTTP_request[i] == ' ') {
+            server_path[i - starting_point] = '\0';
+            break;
+        }
+        server_path[i - starting_point] = HTTP_request[i];
+    }  
+
+    return server_path;
+}
+
+int connection_pair_method(int fd, connection *connections)
+{
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        if (connections[i] != NULL) {
+            if (connections[i]->clientfd == fd || connections[i]->serverfd == fd) {
+                return connections[i]->method;
+            }
+        }
+    }
+}
+
+char *connection_pair_url(int fd, connection *connections)
+{
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        if (connections[i] != NULL) {
+            if (connections[i]->clientfd == fd || connections[i]->serverfd == fd) {
+                return connections[i]->url;
+            }
+        }
+    }
+}
+
+Cache createCache()
+{
+    return NULL;
+}
+
+void insertToCache(Cache cache, char* url, char* content)
+{
+    fprintf(stderr, "inserting url=%s\n", url);
+    return;
+
+    if(url == NULL || content == NULL || cache == NULL){
+        assert("The parameters can not be null");}
+    
+    uint32_t hash_value = jenkinsHashFunction(url);
+    uint32_t index = hash_value % CACHE_SIZE;
+
+    CacheBlock block = malloc(sizeof(*block));
+    block->url = malloc(URL_SIZE);
+    block->content = malloc(CONTENT_SIZE);
+
+    // memcpy(block->url, url);
+    // memcpy(block->content, content);
+
+    block->last_accessed = time(NULL);
+    block->port_number = 80;
+    block->next_element = NULL;
+    if(cache->cache[index] == NULL){ 
+        cache->cache[index] = block;
+    } else {
+        CacheBlock cblock  = cache->cache[index];
+        while(cblock->next_element != NULL){
+            cblock = cblock->next_element;
+        }
+        cblock->next_element = block;
+    }
+
+}
+
+char* getFromCache(Cache cache, char* url)
+{
+    printf("trying to get the data from the cache\n");
+    return NULL;
+}
+
+uint32_t jenkinsHashFunction(char *key)
+{
+    uint32_t hash = 0;
+    uint32_t i = 0;
+    char character = key[i];
+    while(character != '\0'){
+        i++;
+        hash += character;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+        character = key[i];
+    }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+
+    return hash;
 }
