@@ -23,15 +23,15 @@
 		* print all elements of cache
 		* return least accessed
 	
-## Module 4 Build Transcoding Support in your proxy (Sang Woo Kim)
-	- build following transcoding features
-		* option to recieve only plain html text without image
-		* if requested link is an image, option to get lower resolution image
+## Module 4 Content filtering firewall. 
+ (Sang Woo Kim)
+	- Filter pop-ups and other annoying contents
 
 ## Module 5 Limiting Bandwidth (Sang Woo Kim)
 	- limit bandwith for following reasons
 		* requests huge amount of data within certain period of time 
-		* requests data frequently
+		* requests data frequently (DDOS)
+	- Bandwidth control for efficient transfer of data
 
 ## Module 6 Advanced Caching Policy (Manish Aryal)
 	- if a website has a link, cache the links
