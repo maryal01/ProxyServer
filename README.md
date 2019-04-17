@@ -25,7 +25,8 @@
 	
 ## Module 4 Content filtering firewall. 
  (Sang Woo Kim)
-	- Filter pop-ups and other annoying contents
+	- Filter based on file extensions, file types, phrases
+	- Filter content for pop-ups and other
 
 ## Module 5 Limiting Bandwidth (Sang Woo Kim)
 	- limit bandwith for following reasons
