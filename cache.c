@@ -6,7 +6,9 @@
 #define CACHE_SIZE 50
 #define URL_SIZE 100
 #define CONTENT_SIZE 100
+
 uint32_t jenkinsHashFunction(char *key);
+
 typedef struct CacheBlock{
     char* url;
     char* content;
@@ -21,6 +23,9 @@ typedef struct Cache {
     int last_accessed;
 } *Cache;
 
+Cache createCache(){
+    return NULL;
+}
 
 void insertToCache(Cache cache, char* url, char* content){
     if(url == NULL || content == NULL || cache == NULL){
@@ -39,10 +44,9 @@ void insertToCache(Cache cache, char* url, char* content){
     block->last_accessed = time(NULL);
     block->port_number = 80;
     block->next_element = NULL;
-    if(cache->cache[index] == NULL){
+    if(cache->cache[index] == NULL){ 
         cache->cache[index] = block;
     } else {
-
         CacheBlock cblock  = cache->cache[index];
         while(cblock->next_element != NULL){
             cblock = cblock->next_element;
