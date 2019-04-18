@@ -47,16 +47,16 @@
 typedef struct CacheBlock{
     char* url;
     char* content;
+    int content_length;
     time_t last_accessed;
-    int port_number;
-    void* next_element;
+    struct CacheBlock* next_element;
 } *CacheBlock;
 
 typedef struct Cache {
     CacheBlock cache[CACHE_SIZE];
     int total_elements;
-    int last_accessed;
 } *Cache;
+
 /* Manish's code */
 
 /* full_data is the full request message from client */
@@ -111,6 +111,7 @@ char *connection_pair_url(int fd, connection *connections);
 
 /* Manish's functions */
 Cache createCache();
+CacheBlock returnCacheBlock(CacheBlock cache, char* url);
 uint32_t jenkinsHashFunction(char *key);
 char* getFromCache(Cache cache, char* url);
 void insertToCache(Cache cache, char* url, char* content, int content_length);
@@ -660,49 +661,119 @@ char *connection_pair_url(int fd, connection *connections)
     }
 }
 
-Cache createCache()
-{
-    return NULL;
+/*Code for Cache*/
+
+Cache createCache(){
+    Cache  new_cache =  malloc(sizeof(*new_cache));
+    for(int i = 0; i < CACHE_SIZE; i++){
+        new_cache->cache[i] = NULL;
+    }
+    return new_cache;
+
 }
 
-void insertToCache(Cache cache, char* url, char* content, int content_length)
-{
-    fprintf(stderr, "inserting url=%s\n", url);
-    return;
+char* getFromCache(Cache cache, char* url);
+
+void insertToCache(Cache cache, char* url, char* content, int content_length){
 
     if(url == NULL || content == NULL || cache == NULL){
         assert("The parameters can not be null");}
-    
-    uint32_t hash_value = jenkinsHashFunction(url);
-    uint32_t index = hash_value % CACHE_SIZE;
-
     CacheBlock block = malloc(sizeof(*block));
     block->url = malloc(URL_SIZE);
-    block->content = malloc(CONTENT_SIZE);
-
-    // memcpy(block->url, url);
-    // memcpy(block->content, content);
-
+    block->content = malloc(content_length);
+    block->content_length = content_length;
+    memcpy(block->url, url, URL_SIZE);
+    memcpy(block->content, content, content_length);
     block->last_accessed = time(NULL);
-    block->port_number = 80;
     block->next_element = NULL;
-    if(cache->cache[index] == NULL){ 
+
+    uint32_t hash_value = jenkinsHashFunction(url);
+    uint32_t index = hash_value % CACHE_SIZE;
+    fprintf(stderr, "%s url is inserted at index %d \n", url, index);
+    CacheBlock current_block = cache->cache[index];
+    if(current_block == NULL){
         cache->cache[index] = block;
     } else {
-        CacheBlock cblock  = cache->cache[index];
-        while(cblock->next_element != NULL){
-            cblock = cblock->next_element;
+        CacheBlock cblock = returnCacheBlock(current_block, url);
+        if( strcmp(cblock->url, url) == 0){
+            free(block);
+            int total_size = content_length + cblock->content_length;
+            char* total_content = malloc(total_size);
+            memcpy(total_content, cblock->content, cblock->content_length);
+            fprintf(stderr, "Copied %s of length %d \n", cblock->content, cblock->content_length);
+            memcpy(total_content + cblock->content_length, content, content_length);
+            fprintf(stderr, "Copied %s of length %d\n", content, content_length);
+            free(cblock->content);
+            cblock->content = malloc(total_size);
+            cblock->content_length = total_size;
+            memcpy(cblock->content, total_content, total_size);
+            fprintf(stderr, "Copied %s of length %d\n", total_content, total_size);
+        } else {
+            cblock->next_element = block;
         }
-        cblock->next_element = block;
     }
 
 }
 
-char* getFromCache(Cache cache, char* url)
-{
-    printf("trying to get the data from the cache\n");
+CacheBlock returnCacheBlock(CacheBlock cblock, char* url){
+    CacheBlock pblock = NULL;
+    while(cblock != NULL && strcmp(cblock->url, url) != 0){
+        pblock = cblock;
+        cblock = cblock->next_element;
+    }
+    if(cblock == NULL){
+        return pblock;
+    }
+    return cblock;
+}
+
+
+void removeLastAccessed(Cache cache){
+    int index_to_remove = -1;
+    time_t earliest_time = time(NULL);
+    for(int i = 0; i < CACHE_SIZE; i++){
+        CacheBlock cblock = cache->cache[i];
+        if(cblock != NULL){
+            if (earliest_time > cblock->last_accessed){
+                earliest_time = cblock->last_accessed;
+                index_to_remove = i;
+            }
+        }
+    }
+
+    CacheBlock remove_cache = cache->cache[index_to_remove];
+    CacheBlock replace_cache = remove_cache->next_element;
+    cache->cache[index_to_remove] = replace_cache;
+    remove_cache->next_element = NULL;
+    free(remove_cache);
+}
+
+char* getFromCache(Cache cache, char* url){
+    fprintf(stderr, "The url passed here is: %s\n", url);
+     if(url == NULL ||  cache == NULL){
+        assert("The parameters can not be null");}
+    
+    uint32_t hash_value = jenkinsHashFunction(url);
+    uint32_t index = hash_value % CACHE_SIZE;
+    
+    CacheBlock cblock = cache->cache[index];
+    while(cblock != NULL && strcmp(cblock->url, url) != 0 ){
+        cblock = cblock->next_element;
+    }
+    if (cblock != NULL){
+        cblock->last_accessed = time(NULL);
+        return cblock->content;
+    }
+    
     return NULL;
 }
+
+void resizeCache(Cache *cache){
+    printf("resizing the cache\n");
+}
+
+
+
 
 uint32_t jenkinsHashFunction(char *key)
 {

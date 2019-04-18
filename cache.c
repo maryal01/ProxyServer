@@ -34,6 +34,7 @@ Cache createCache(){
 }
 CacheBlock returnCacheBlock(CacheBlock cache, char* url);
 char* getFromCache(Cache cache, char* url);
+
 void insertToCache(Cache cache, char* url, char* content, int content_length){
 
     if(url == NULL || content == NULL || cache == NULL){
