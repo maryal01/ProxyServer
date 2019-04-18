@@ -25,7 +25,7 @@
 	
 ## Module 4 Content filtering firewall. 
  (Sang Woo Kim)
-	- Filter based on file extensions, file types, phrases
+	- Filter images that are not "clean"
 	- Filter content for pop-ups and other
 
 ## Module 5 Limiting Bandwidth (Sang Woo Kim)
