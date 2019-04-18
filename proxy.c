@@ -107,6 +107,7 @@ char *get_url(char *HTTP_request);
 /* returns 0 for GET, and 1 for CONNECT */
 int connection_pair_method(int fd, connection *connections);
 char *connection_pair_url(int fd, connection *connections);
+int content_size(Cache cache, char* url);
 
 
 /* Manish's functions */
@@ -132,6 +133,7 @@ int main(int argc, char *argv[])
     int status_code;
     char *objectFromCache;
     char *url;
+    int size;
     cache_line cache[CACHELINES];
     connection connections[CONCURRENTCONNECTIONS];
     client_request request;
@@ -232,9 +234,18 @@ int main(int argc, char *argv[])
                         } else {
                             fprintf(stderr, "GET request\n");
                             objectFromCache = getFromCache(proxyCache, url);
+                            size = content_size(proxyCache, url);
                             if (objectFromCache) {
                                 fprintf(stderr, "resource found in cache \n");
-
+                                m = write(i, objectFromCache, size);
+                                if (m < 0) {
+                                    free(request);
+                                    remove_connection_pair(serverfd, connections);
+                                    close(i);
+                                    partnerfd = partner(i, connections);
+                                    close(partnerfd);
+                                    continue;
+                                }
                             } else {
                                 fprintf(stderr, "resource NOT found in cache \n");
                                 status_code = establish_connection_with_server(&serverfd, request);
@@ -766,6 +777,27 @@ char* getFromCache(Cache cache, char* url){
     }
     
     return NULL;
+}
+
+/* returns -1 if url not found */
+int content_size(Cache cache, char* url)
+{
+    fprintf(stderr, "The url passed here is: %s\n", url);
+     if(url == NULL ||  cache == NULL){
+        assert("The parameters can not be null");}
+    
+    uint32_t hash_value = jenkinsHashFunction(url);
+    uint32_t index = hash_value % CACHE_SIZE;
+    
+    CacheBlock cblock = cache->cache[index];
+    while(cblock != NULL && strcmp(cblock->url, url) != 0 ){
+        cblock = cblock->next_element;
+    }
+    if (cblock != NULL){
+        return cblock->content_length;
+    }
+    
+    return -1;
 }
 
 void resizeCache(Cache *cache){
