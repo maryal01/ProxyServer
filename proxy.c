@@ -113,7 +113,7 @@ char *connection_pair_url(int fd, connection *connections);
 Cache createCache();
 uint32_t jenkinsHashFunction(char *key);
 char* getFromCache(Cache cache, char* url);
-void insertToCache(Cache cache, char* url, char* content);
+void insertToCache(Cache cache, char* url, char* content, int content_length);
 /* Manish's functions */
 
 int main(int argc, char *argv[])
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
                         fprintf(stderr, "connection exists\n");
                         if(connection_pair_method(i, connections) == GET) {
                             fprintf(stderr, "inserting to cache\n");
-                            insertToCache(proxyCache, connection_pair_url(i, connections), buffer);
+                            insertToCache(proxyCache, connection_pair_url(i, connections), buffer, m);
                         }
                         partnerfd = partner(i, connections);
                         m = write(partnerfd, buffer, m);
@@ -665,7 +665,7 @@ Cache createCache()
     return NULL;
 }
 
-void insertToCache(Cache cache, char* url, char* content)
+void insertToCache(Cache cache, char* url, char* content, int content_length)
 {
     fprintf(stderr, "inserting url=%s\n", url);
     return;
