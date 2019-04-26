@@ -22,6 +22,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <bandwidth.h>
 
 /* pending connection queue's max length */
 #define BACKLOG 20
@@ -134,12 +135,22 @@ int main(int argc, char *argv[])
     char *objectFromCache;
     char *url;
     int size;
+    int max_bandwidth;
     cache_line cache[CACHELINES];
     connection connections[CONCURRENTCONNECTIONS];
     client_request request;
 
     ensure_argument_validity(argc, argv[0]);
     port = atoi(argv[1]);
+
+    // Bandwidth taking input
+    if (argc == 3) {
+        max_bandwidth = atoi(argv[2]);
+        set_max_bandwidth(max_bandwidth);
+    }
+    else 
+        max_bandwidth = 0;
+
     server = create_socket(port);
     if (listen (server, BACKLOG) < 0) 
         error("listen");
@@ -237,7 +248,7 @@ int main(int argc, char *argv[])
                             size = content_size(proxyCache, url);
                             if (objectFromCache) {
                                 fprintf(stderr, "resource found in cache \n");
-                                m = write(i, objectFromCache, size);
+                                m = limit_cached(i, objectFromCache, size);
                                 if (m < 0) {
                                     free(request);
                                     remove_connection_pair(serverfd, connections);
@@ -257,7 +268,7 @@ int main(int argc, char *argv[])
                                 }
                                 FD_SET (serverfd, &active_fd_set);
                                 create_connection_pair(i, serverfd, GET, url, connections);
-                                m = write(serverfd, buffer, strlen(buffer));
+                                m = limit_uncached(serverfd, buffer, strlen(buffer));
                                 if (m < 0) {
                                     free(request);
                                     remove_connection_pair(serverfd, connections);
@@ -288,8 +299,10 @@ void error(char *msg)
 /* ensures that port number is provided with executable name */
 void ensure_argument_validity(int argc, char *executable_name)
 {
-    if (argc != 2) {
-        fprintf(stderr, "usage: %s <port>\n", executable_name);
+    if (argc != 2 || argc != 3) {
+        fprintf(stderr, "usage: %s <port> or\n", executable_name);
+        // Bandwidth taking argument
+        fprintf(stderr, "usage: %s <port> <max_bandwidth>\n", executable_name);
         exit(EXIT_FAILURE);
     }
 }
@@ -600,7 +613,7 @@ void send_HTTP_OK(int clientfd)
     int m;
     char *HTTP_OK = "HTTP/1.1 200 Connection Established\r\n\r\n";
     fprintf(stderr, "strlen(HTTP_OK)=%d\n", strlen(HTTP_OK));
-    m = write(clientfd, HTTP_OK, strlen(HTTP_OK));
+    m = limit_uncached(clientfd, HTTP_OK, strlen(HTTP_OK));
     if (m < 0) 
         close(clientfd);
     
