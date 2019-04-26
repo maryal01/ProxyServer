@@ -10,6 +10,13 @@
     won't come into play, even though it theoretically should.
 */
 
+/*
+
+    TODO for bandwidth:
+    * keep the socket in the set even when done sending 
+      / if its not this, find a way to make the process go forward for that socket
+    * find out where to send for client that is not in the cache
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -191,6 +198,7 @@ int main(int argc, char *argv[])
                     m = read(i, buffer, BUFSIZE);
                     if (m <= 0) {
                         fprintf(stderr,"read 0 or less bytes\n");
+                        clear_bandwidth(i);
                         if (connection_exists(i, connections)) {
                             partnerfd = partner(i, connections);
                             close(partnerfd);
@@ -215,6 +223,7 @@ int main(int argc, char *argv[])
                             close(i);
                             partnerfd = partner(i, connections);
                             close(partnerfd);
+                            clear_bandwidth(i);
                             continue;
                         }
                     } else {
@@ -250,17 +259,21 @@ int main(int argc, char *argv[])
                                 fprintf(stderr, "resource found in cache \n");
                                 m = limit_cached(i, objectFromCache, size);
                                 if (m < 0) {
+                                    fprintf(stderr, "connection closed from sending from cache\n");
                                     free(request);
                                     remove_connection_pair(serverfd, connections);
                                     close(i);
                                     partnerfd = partner(i, connections);
                                     close(partnerfd);
+                                    clear_bandwidth(i);
                                     continue;
                                 }
+                                fprintf(stderr, "socket %d wrote %d bytes from cache\n", i, m);
                             } else {
                                 fprintf(stderr, "resource NOT found in cache \n");
                                 status_code = establish_connection_with_server(&serverfd, request);
                                 if (status_code == -1) {
+                                    fprintf(stderr, "connection closed from sending not from cache\n");
                                     free(request);
                                     close(i);
                                     FD_CLR(i, &active_fd_set);
@@ -268,7 +281,7 @@ int main(int argc, char *argv[])
                                 }
                                 FD_SET (serverfd, &active_fd_set);
                                 create_connection_pair(i, serverfd, GET, url, connections);
-                                m = limit_uncached(serverfd, buffer, strlen(buffer));
+                                m = write(serverfd, buffer, strlen(buffer));
                                 if (m < 0) {
                                     free(request);
                                     remove_connection_pair(serverfd, connections);
@@ -299,7 +312,7 @@ void error(char *msg)
 /* ensures that port number is provided with executable name */
 void ensure_argument_validity(int argc, char *executable_name)
 {
-    if (argc != 2 || argc != 3) {
+    if (argc != 2 && argc != 3) {
         fprintf(stderr, "usage: %s <port> or\n", executable_name);
         // Bandwidth taking argument
         fprintf(stderr, "usage: %s <port> <max_bandwidth>\n", executable_name);

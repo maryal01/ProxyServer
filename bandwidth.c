@@ -74,11 +74,12 @@ int limit_uncached(int fd, char *data, int data_size) {
     // if first time sending to client,
     // simply transfer, saving necessary data for next transfers
     if (band_info->blocks[fd]->first_time == 0) {
-        fprintf(stderr, "new data sent at %d from server for first time\n", curr_time);
+        fprintf(stderr, "\nnew data sent at %d from server for first time\n", curr_time);
         m = write(fd, data, data_size);
         band_info->blocks[fd]->sent_size = data_size;   // saving sent_size
         band_info->blocks[fd]->first_time = curr_time;  // saving first_time
         band_info->blocks[fd]->next_time = get_next_time(data_size, curr_time); // saving next_time
+        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
     }
 
     // if not first time sending to client,
@@ -88,6 +89,7 @@ int limit_uncached(int fd, char *data, int data_size) {
         m = write(fd, data, data_size);
         band_info->blocks[fd]->sent_size += data_size;
         band_info->blocks[fd]->next_time = get_next_time(data_size, band_info->blocks[fd]->first_time);
+        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
     } else 
         m = 0; // telling proxy that I did not send any data because time has not met
                // socket closes only when m < 0 in proxy
@@ -101,16 +103,19 @@ int limit_cached(int fd, char *data, int content_size) {
         return write(fd, data, content_size); 
 
     time_t curr_time = time(NULL);
+    fprintf(stderr, "time is %d\n", curr_time);
     int m;
 
     // if first send, just write first 400 of cached
     //     save sent_size, first_time, and next_time
     if (band_info->blocks[fd]->first_time == 0) {
         fprintf(stderr, "new data sent at %d from cache for first time\n", curr_time);
+        fprintf(stderr, "content_size is %d\n", content_size);
         m = write(fd, data, FROM_CACHE_SIZE);
         band_info->blocks[fd]->sent_size = FROM_CACHE_SIZE;   // saving sent_size
         band_info->blocks[fd]->first_time = curr_time;  // saving first_time
         band_info->blocks[fd]->next_time = get_next_time(FROM_CACHE_SIZE, curr_time); // saving next_time
+        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
     }
 
     // if not first
@@ -122,9 +127,11 @@ int limit_cached(int fd, char *data, int content_size) {
           && curr_time >= band_info->blocks[fd]->next_time) 
     {
         fprintf(stderr, "new data sent at %d from cache for later time\n", curr_time);
-        m = write(fd, data, FROM_CACHE_SIZE);
+        fprintf(stderr, "content_size is %d\n", content_size);
+        m = write(fd, data + band_info->blocks[fd]->sent_size, FROM_CACHE_SIZE);
         band_info->blocks[fd]->sent_size += FROM_CACHE_SIZE;   // saving sent_size
         band_info->blocks[fd]->next_time = get_next_time(band_info->blocks[fd]->sent_size, band_info->blocks[fd]->first_time); // saving next_time
+        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
     } else
         m = 0; // telling proxy that I did not send any data because time has not met or 
                // socket closes only when m < 0 in proxy
@@ -137,4 +144,9 @@ void clear_bandwidth (int fd) {
     band_info->blocks[fd]->sent_size = 0;
     band_info->blocks[fd]->first_time = 0;
     band_info->blocks[fd]->next_time = 0;
+}
+
+// checking if the socket fd sending is delayed due to bandwidth controlling
+bool is_limit_sending(int fd) {
+    return max_bandwidth != 0 && band_info->blocks[fd]->first_time != 0;
 }
