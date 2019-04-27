@@ -10,7 +10,7 @@
 
 #define CACHE_SIZE 50
 #define URL_SIZE 100
-
+#define BLOOM_SIZE 60
 
 typedef struct CacheBlock{
     char* url;
@@ -27,6 +27,7 @@ struct T {
     int total_elements;
 };
 
+uint64_t bloom_filter = 0;
 
 CacheBlock head; //needed to remove the element in O(1) time
 CacheBlock tail; //needed to update the position of the element, already in the list, in O(1) time
@@ -36,6 +37,16 @@ CacheBlock returnCacheBlock(CacheBlock cache, char* url);
 CacheBlock returnCacheBlock(CacheBlock cblock, char* url);
 void removeLastAccessed(Cache cache);
 
+void setBloomIndex(uint64_t bloom_filter, int i){
+    uint32_t flag = 1;
+    flag = flag >> i;
+
+    return bloom_filter & flag;
+}
+
+int getBloomIndex(uint64_t bloom_filter, int i){
+    
+}
 
 Cache createCache(){
     Cache  new_cache =  malloc(sizeof(*new_cache));

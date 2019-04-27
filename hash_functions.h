@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 
-uint32_t jenkinsHashFunction(char *key)
+uint32_t hash_function1(char *key)
 {
     uint32_t hash = 0;
     uint32_t i = 0;
@@ -30,7 +30,7 @@ uint32_t jenkinsHashFunction(char *key)
 }
 
 
-uint32_t  ElfHash ( const char *s )
+uint32_t  hash_function2( const char *s )
 {
     uint32_t  h = 0, high;
     while ( *s )
