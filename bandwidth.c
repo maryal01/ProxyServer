@@ -12,10 +12,11 @@
 #include <netdb.h>
 #include <bandwidth.h>
 
-// Does my logic, accounting for the roundtrip time, make sense?
-// should i use millisecond instead of seconds?
-#define FROM_CACHE_SIZE 400 // Question to ask: is it fine to use 400 as the packet size? researched
-#define MAX_SOCKET_NUM  30  // Question to ask: if 20 is max select size, will there be a mapping?
+
+#define FROM_CACHE_SIZE 4000 
+#define MAX_SOCKET_NUM  30  
+#define MAX_CACHE_SIZE 10000000
+#define MAX_BUFFER_SIZE 1000000
 
 /*
 Algorithm: 
@@ -28,9 +29,13 @@ next_time = --------- + first_time
 */
 
 typedef struct BandwidthBlock {
-    int sent_size;     // records number of bits sent so far
-    time_t first_time; // records first time data was sent to the socket number
-    time_t next_time;  // records the next time the data should be sent
+    int     size; // initialized to be 0, size of what should be sent
+    time_t  last_time; // intitialized to be 0, time of what was last sent, identifies if everything was sent
+    int     wait_time; // intitialized to be 0, wait time
+    bool    in_cache; // checks if its in cache
+    char *  data;     // data of whats going to be sent || stores everything from the cache
+    int     address; // for cache, address of up till where data is sent total
+    int     cache_size; // for cache, size of content_size in cache
 } *BandwidthBlock;
 
 typedef struct Bandwidth {
@@ -38,115 +43,252 @@ typedef struct Bandwidth {
 } *Bandwidth;
 
 int max_bandwidth; // 0 if there is no bandwidth_limiting specified by client
-Bandwidth band_info;
+Bandwidth bandwidth_blocks;
 
-int get_bandwidth(int sent_size, time_t first_time, time_t curr_time) {
-    return sent_size / (first_time - curr_time);
+int get_wait_time (int size);
+BandwidthBlock initiate_bandwidth();
+int write_cache (int fd, time_t curr_time, BandwidthBlock block);
+int write_uncache (int fd, time_t curr_time, BandwidthBlock block);
+void update_cache(time_t curr_time, BandwidthBlock block);
+void update_uncache(time_t curr_time, BandwidthBlock block);
+void save_cache(int fd, time_t curr_time, char *content, int content_size);
+void save_uncache(int fd, time_t curr_time, char *data, int data_size);
+
+
+int get_wait_time (int size) {
+    return (size / max_bandwidth);  
 }
 
-time_t get_next_time (int sent_size, time_t first) {
-    return (time_t) (sent_size / max_bandwidth) + first;  
+/******************* initializing the interface ******************/
+
+BandwidthBlock initiate_bandwidth() {
+    BandwidthBlock new_block = malloc(sizeof(*new_block));
+    new_block->size = 0;
+    new_block->last_time = 0;
+    new_block->wait_time = 0;
+    new_block->in_cache = false;
+    new_block->data = NULL;
+    new_block->address = 0;
+    new_block->cache_size = 0;
+    return new_block;
 }
 
 // assumes that there is a bandwidth control if this function is called
-void set_max_bandwidth(int bandwidth) { 
-    fprintf(stderr, "Proxy initialized\n");
+void limit_set_bandwidth(int bandwidth) { 
+    fprintf(stderr, "bandwidth initialized\n");
     max_bandwidth = bandwidth; // bits per second to bytes per second
-    if(bandwidth > 0) {
-        band_info = malloc(sizeof(*band_info));
+    bandwidth_blocks = malloc(sizeof(*bandwidth_blocks));
 
-        for(int i = 0; i < MAX_SOCKET_NUM; i++){
-            // malloc block for each socket here
-            BandwidthBlock new_block = malloc(sizeof(*new_block));
-            band_info->blocks[i] = new_block;
+    for(int i = 0; i < MAX_SOCKET_NUM; i++){
+        bandwidth_blocks->blocks[i] = initiate_bandwidth();
+    }
+}
+
+/******************* writing ******************/
+
+// in proxy, will happen for each of the 20 sockets
+
+int limit_write (int fd) {
+    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    time_t curr_time = time(NULL);
+    if (block->wait_time + block->last_time <= curr_time && block->last_time != 0) {
+        // for fd's that are not connected, there will be simply no writing, returning m <= 0
+        if (block->in_cache)  {
+            fprintf(stderr, "write, curr_time is %d", curr_time);
+            return write_cache(fd, curr_time, block);
         }
-    }
+        else 
+            return write_uncache(fd, curr_time, block);
+    } 
+    return 0; // no data to write
 }
 
-int limit_uncached(int fd, char *data, int data_size) {
-    // if max_bandwidth is not specified, simply do write
-    if (max_bandwidth == 0) 
-        return write(fd, data, data_size); 
 
-    time_t curr_time = time(NULL);
-    int m;
-
-    // if first time sending to client,
-    // simply transfer, saving necessary data for next transfers
-    if (band_info->blocks[fd]->first_time == 0) {
-        fprintf(stderr, "\nnew data sent at %d from server for first time\n", curr_time);
-        m = write(fd, data, data_size);
-        band_info->blocks[fd]->sent_size = data_size;   // saving sent_size
-        band_info->blocks[fd]->first_time = curr_time;  // saving first_time
-        band_info->blocks[fd]->next_time = get_next_time(data_size, curr_time); // saving next_time
-        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
+// writing from cache
+int write_cache (int fd, time_t curr_time, BandwidthBlock block) {
+    fprintf(stderr, "writing address %d from cache\n", block->address);
+    int m = write (fd, block->data + block->address, block->size);
+    // not all data are sent
+    if (block->address + block->size < block->cache_size)
+        update_cache(curr_time, block);
+    // all data are sent
+    else  {
+        fprintf(stderr, "writing address %d from cache\n", block->address);
+        limit_clear(fd);
     }
-
-    // if not first time sending to client,
-    // check 
-    else if (curr_time >= band_info->blocks[fd]->next_time) {
-        fprintf(stderr, "new data sent at %d from server for later time\n", curr_time);
-        m = write(fd, data, data_size);
-        band_info->blocks[fd]->sent_size += data_size;
-        band_info->blocks[fd]->next_time = get_next_time(data_size, band_info->blocks[fd]->first_time);
-        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
-    } else 
-        m = 0; // telling proxy that I did not send any data because time has not met
-               // socket closes only when m < 0 in proxy
-
     return m;
 }
 
-int limit_cached(int fd, char *data, int content_size) {
-    // if max_bandwidth is not specified, simply do write
-    if (max_bandwidth == 0) 
-        return write(fd, data, content_size); 
+// writing from connections
+int write_uncache (int fd, time_t curr_time, BandwidthBlock block) {
+    fprintf(stderr, "writing from uncache of size %d\n", block->size);
+    int m = write (fd, block->data, block->size);
 
-    time_t curr_time = time(NULL);
-    fprintf(stderr, "time is %d\n", curr_time);
-    int m;
-
-    // if first send, just write first 400 of cached
-    //     save sent_size, first_time, and next_time
-    if (band_info->blocks[fd]->first_time == 0) {
-        fprintf(stderr, "new data sent at %d from cache for first time\n", curr_time);
-        fprintf(stderr, "content_size is %d\n", content_size);
-        m = write(fd, data, FROM_CACHE_SIZE);
-        band_info->blocks[fd]->sent_size = FROM_CACHE_SIZE;   // saving sent_size
-        band_info->blocks[fd]->first_time = curr_time;  // saving first_time
-        band_info->blocks[fd]->next_time = get_next_time(FROM_CACHE_SIZE, curr_time); // saving next_time
-        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
-    }
-
-    // if not first
-    //     if not all data in cache are sent, 
-    //         if curr time >= next
-    //             write + sent_size, save send_size and next_time
-
-    else if (band_info->blocks[fd]->sent_size < content_size 
-          && curr_time >= band_info->blocks[fd]->next_time) 
-    {
-        fprintf(stderr, "new data sent at %d from cache for later time\n", curr_time);
-        fprintf(stderr, "content_size is %d\n", content_size);
-        m = write(fd, data + band_info->blocks[fd]->sent_size, FROM_CACHE_SIZE);
-        band_info->blocks[fd]->sent_size += FROM_CACHE_SIZE;   // saving sent_size
-        band_info->blocks[fd]->next_time = get_next_time(band_info->blocks[fd]->sent_size, band_info->blocks[fd]->first_time); // saving next_time
-        fprintf(stderr, "next time is %d\n\n", band_info->blocks[fd]->next_time);
-    } else
-        m = 0; // telling proxy that I did not send any data because time has not met or 
-               // socket closes only when m < 0 in proxy
-
+    // disconnect from error flag of write raised;
+    if (m < 0)
+        limit_clear(fd);
+    else 
+        update_uncache(curr_time, block);
     return m;
 }
 
-// resetting bandwidth information when closed
-void clear_bandwidth (int fd) {
-    band_info->blocks[fd]->sent_size = 0;
-    band_info->blocks[fd]->first_time = 0;
-    band_info->blocks[fd]->next_time = 0;
+/* 
+when updating cache, keep whats stored in block->data, 
+since all the content in cache are stored in block->data
+*/
+void update_cache(time_t curr_time, BandwidthBlock block) {
+    fprintf(stderr, "updating cache\n");
+    block->last_time = curr_time;
+    if (block->cache_size - block->address > FROM_CACHE_SIZE)
+        block->size = FROM_CACHE_SIZE;
+    else
+        block->size = block->cache_size - block->address;
+    block->address += block->size;
+    block->wait_time = get_wait_time(block->size);
 }
 
-// checking if the socket fd sending is delayed due to bandwidth controlling
-bool is_limit_sending(int fd) {
-    return max_bandwidth != 0 && band_info->blocks[fd]->first_time != 0;
+/* 
+when updating uncache, bzero out block->data , 
+since only what we read from the server is stored in block->data
+*/
+void update_uncache(time_t curr_time, BandwidthBlock block) {
+    fprintf(stderr, "updating uncache\n");
+    block->size = 0;
+    block->last_time = curr_time;
+    block->wait_time = 0;
+    bzero(block->data, MAX_BUFFER_SIZE);
+}
+
+
+/***************** clearing when disconnect/ all data sent ******************/
+
+// resetting bandwidth information when connection closed
+void limit_clear(int fd) {
+    fprintf(stderr, "limit clear called, ");
+    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    if (block->data) {
+        fprintf(stderr, "limit clear on broken connection\n");
+        block->size = 0;
+        block->last_time = 0;
+        block->wait_time = 0;
+        block->in_cache = false;
+        free(block->data);
+        block->data = NULL;
+        block->address = 0;
+        block->cache_size = 0;
+    }
+} 
+
+
+
+
+/***************** saving data to send after read ******************/
+
+void limit_save(int fd, char* data, int size, bool in_cache) {
+    fprintf(stderr, "saving limit of size %d\n", size);
+    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    time_t curr_time = time(NULL);
+    if (in_cache) {
+        save_cache(fd, curr_time, data, size);
+    }
+    else {
+        // if first time sending
+        save_uncache(fd, curr_time, data, size);
+    }
+}
+
+/*
+Parameter:  int fd, time_t curr_time, char *content, int content_size
+            content : total cache data (max size 10000000)
+            content_size : total cache content size
+Purpose:    saves cache content that has to be sent to fd with cache control
+                - whole content from cache is memcpy'ed to BandwidthBlock->data.
+                  therefore, calling this function will set everything up to be 
+                  written to client requesting data from cache
+
+*/
+void save_cache(int fd, time_t curr_time, char *content, int content_size) {
+    fprintf(stderr, "save cache\n");
+    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    block->data = malloc(sizeof(char) * MAX_CACHE_SIZE);
+    memcpy(block->data, content, content_size);
+    block->in_cache = true;
+    block->cache_size = content_size;
+    block->address = 0;
+
+    // if no bandwidth control, send everything right away
+    if (max_bandwidth == 0)
+        block->size = content_size;
+
+    // if there is bandwith control and cache_size > FROM_CACHE_SIZE 
+    // send 400
+    else if (content_size > FROM_CACHE_SIZE)
+        block->size = FROM_CACHE_SIZE;
+    // if there is bandwith control and cache_size <= FROM_CACHE_SIZE 
+    // send only cache_size
+    else
+        block->size = content_size;
+
+    // if there is no bandwidth control there should be no waiting
+    if (max_bandwidth > 0) {
+        block->wait_time = get_wait_time(block->size);
+        fprintf(stderr, "waittime (cache) is %d, curr_time is %d\n", block->wait_time, curr_time);
+    }
+    else  {
+        fprintf(stderr, "waittime (cache) is zero \n");
+        block->wait_time = 0;
+    }
+    block->last_time = curr_time;
+}
+
+/*
+Parameter:  int fd, time_t curr_time, char *content, int content_size
+            data: data you read from server (e.g. facebook.com)
+            content_size: size of data read from server (e.g. facebook.com)
+Purpose:    saves content read from server that client requested data from
+                - every time the proxy server reads new data from server (e.g. facebook.com)
+                  this function should be called, 
+*/
+void save_uncache(int fd, time_t curr_time, char *data, int data_size) {
+    fprintf(stderr, "saving uncache of size %d,", data_size);
+    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+
+    if(block->last_time == 0)
+        block->data = malloc(sizeof(char) * MAX_BUFFER_SIZE);
+    else 
+        bzero(block->data, MAX_BUFFER_SIZE);
+    memcpy(block->data + block->size, data, data_size);
+
+    block->size += data_size;
+    block->in_cache = false;
+
+    if (max_bandwidth > 0) {
+        block->wait_time = get_wait_time(block->size);
+        fprintf(stderr, "waittime is %d, curr_time is %d\n", block->wait_time, curr_time);
+    }
+    // if there is no bandwidth control there should be no waiting
+    else  {
+        fprintf(stderr, "waittime is zero \n");
+        block->wait_time = 0;
+    }
+
+    // meaning this connection has never sent a data yet,
+    // else last_time is updated in update_cache
+    if(block->last_time == 0)
+        block->last_time = curr_time;
+}
+
+
+
+/* controlling read for bandwidth control */
+bool limit_read_wait(int fd) {
+    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+
+    // if true, I have something waiting to be sent
+    if (block->size != 0) {
+        fprintf(stderr, "should wait \n");
+        return true;
+    }
+    fprintf(stderr, "should not wait \n");
+    return false;
 }

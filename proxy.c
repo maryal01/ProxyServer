@@ -10,13 +10,6 @@
     won't come into play, even though it theoretically should.
 */
 
-/*
-
-    TODO for bandwidth:
-    * keep the socket in the set even when done sending 
-      / if its not this, find a way to make the process go forward for that socket
-    * find out where to send for client that is not in the cache
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -126,6 +119,10 @@ char* getFromCache(Cache cache, char* url);
 void insertToCache(Cache cache, char* url, char* content, int content_length);
 /* Manish's functions */
 
+/* Roy's function */ 
+bool is_client(int fd, connection *connections);
+/* Roy's function */ 
+
 int main(int argc, char *argv[])
 {
     int i, m;
@@ -142,21 +139,26 @@ int main(int argc, char *argv[])
     char *objectFromCache;
     char *url;
     int size;
-    int max_bandwidth;
     cache_line cache[CACHELINES];
     connection connections[CONCURRENTCONNECTIONS];
     client_request request;
 
+
+    
+
     ensure_argument_validity(argc, argv[0]);
     port = atoi(argv[1]);
-
-    // Bandwidth taking input
+    
+    /* BANDWIDTH LIMIT INITIALIZE */
+    /* added to get the maximum bandwidth for the bandwidth interface */
+    int max_bandwidth = 0;
     if (argc == 3) {
         max_bandwidth = atoi(argv[2]);
-        set_max_bandwidth(max_bandwidth);
+        limit_set_bandwidth(max_bandwidth);
     }
     else 
-        max_bandwidth = 0;
+        limit_set_bandwidth(0); // If bandwidth = 0, bandwidth option is off,
+    /* BANDWIDTH LIMT INITIALIZE */
 
     server = create_socket(port);
     if (listen (server, BACKLOG) < 0) 
@@ -172,6 +174,22 @@ int main(int argc, char *argv[])
     while (true) {
         tv.tv_sec = 0;
         tv.tv_usec = 0;
+
+        /* BANDWIDTH LIMIT WRITE */ 
+        // for each socket, write to client if fd is in 
+        for (int i = 0; i < CONCURRENTCONNECTIONS; ++i) {
+            m = limit_write(i);
+            if (m < 0) {
+                fprintf(stderr, "ERROR writing from limiting bandwidth");
+                remove_connection_pair(i, connections);
+                close(i);
+                partnerfd = partner(i, connections);
+                close(partnerfd);
+                // BANDWIDTH LIMIT CLEAR fd info ON ERROR
+                limit_clear(i);
+            }
+        }
+        /* BANDWIDTH LIMIT WRITE */ 
 
         read_fd_set = active_fd_set;
         if (select (FD_SETSIZE, &read_fd_set, NULL, NULL,  &tv) < 0)
@@ -195,19 +213,25 @@ int main(int argc, char *argv[])
                 {
                     fprintf(stderr, "received some data\n");
                     bzero(buffer, BUFSIZE);
-                    m = read(i, buffer, BUFSIZE);
-                    if (m <= 0) {
-                        fprintf(stderr,"read 0 or less bytes\n");
-                        clear_bandwidth(i);
-                        if (connection_exists(i, connections)) {
-                            partnerfd = partner(i, connections);
-                            close(partnerfd);
-                            FD_CLR(partnerfd, &active_fd_set);
-                            remove_connection_pair(i, connections);
+                    // wait so I could send all the message first
+                    if (!limit_read_wait(i)) {
+                        m = read(i, buffer, BUFSIZE);
+                        if (m <= 0) {
+                            fprintf(stderr,"read 0 or less bytes\n");
+                            if (connection_exists(i, connections)) {
+                                partnerfd = partner(i, connections);
+                                close(partnerfd);
+                                FD_CLR(partnerfd, &active_fd_set);
+                                remove_connection_pair(i, connections);
+                                /* BANDWIDTH LIMIT CLEAR */
+                                limit_clear(partnerfd);
+                            }
+                            close(i);
+                            /* BANDWIDTH LIMIT CLEAR */
+                            limit_clear(i);
+                            FD_CLR(i, &active_fd_set);
+                            continue;
                         }
-                        close(i);
-                        FD_CLR(i, &active_fd_set);
-                        continue;
                     }
 
                     if (connection_exists(i, connections)) {
@@ -217,15 +241,24 @@ int main(int argc, char *argv[])
                             insertToCache(proxyCache, connection_pair_url(i, connections), buffer, m);
                         }
                         partnerfd = partner(i, connections);
-                        m = write(partnerfd, buffer, m);
-                        if (m < 0) {
-                            remove_connection_pair(i, connections);
-                            close(i);
-                            partnerfd = partner(i, connections);
-                            close(partnerfd);
-                            clear_bandwidth(i);
-                            continue;
+                        /* BANDWIDTH LIMIT SAVE FOR UNCACHED */
+                        // more explanations in bandwidth.h file
+                        if (is_client(partnerfd, connections))
+                            limit_save(partnerfd, buffer, m, false);
+                        
+                        // simply write to server (e.g. facebook.com)
+                        // if partnerfd is a server
+                        else {
+                            m = write(partnerfd, buffer, m);
+                            if (m < 0) {
+                                remove_connection_pair(i, connections);
+                                close(i);
+                                partnerfd = partner(i, connections);
+                                close(partnerfd);
+                                continue;
+                            }
                         }
+                        /* BANDWIDTH LIMIT SAVE FOR UNCACHED */
                     } else {
                         fprintf(stderr, "%s\n", buffer);
                         fprintf(stderr, "connection doesn't exist\n");
@@ -257,23 +290,22 @@ int main(int argc, char *argv[])
                             size = content_size(proxyCache, url);
                             if (objectFromCache) {
                                 fprintf(stderr, "resource found in cache \n");
-                                m = limit_cached(i, objectFromCache, size);
+                                /* BANDWIDTH LIMIT SAVE (commented out original) */
+                                limit_save(i, objectFromCache, size, true);
+                                /* ORIGINAL
+                                m = write(i, objectFromCache, size);
                                 if (m < 0) {
-                                    fprintf(stderr, "connection closed from sending from cache\n");
                                     free(request);
                                     remove_connection_pair(serverfd, connections);
                                     close(i);
                                     partnerfd = partner(i, connections);
                                     close(partnerfd);
-                                    clear_bandwidth(i);
                                     continue;
-                                }
-                                fprintf(stderr, "socket %d wrote %d bytes from cache\n", i, m);
+                                }*/
                             } else {
                                 fprintf(stderr, "resource NOT found in cache \n");
                                 status_code = establish_connection_with_server(&serverfd, request);
                                 if (status_code == -1) {
-                                    fprintf(stderr, "connection closed from sending not from cache\n");
                                     free(request);
                                     close(i);
                                     FD_CLR(i, &active_fd_set);
@@ -310,6 +342,7 @@ void error(char *msg)
 }
 
 /* ensures that port number is provided with executable name */
+/*********** added argument 3 for bandwidth control option ************/
 void ensure_argument_validity(int argc, char *executable_name)
 {
     if (argc != 2 && argc != 3) {
@@ -626,9 +659,17 @@ void send_HTTP_OK(int clientfd)
     int m;
     char *HTTP_OK = "HTTP/1.1 200 Connection Established\r\n\r\n";
     fprintf(stderr, "strlen(HTTP_OK)=%d\n", strlen(HTTP_OK));
-    m = limit_uncached(clientfd, HTTP_OK, strlen(HTTP_OK));
-    if (m < 0) 
+    /* BANDWIDTH LIMIT Save */ 
+    // commented out original
+    limit_save(clientfd, HTTP_OK, strlen(HTTP_OK), false);
+    /* ORIGINAL
+    m = write(clientfd, HTTP_OK, strlen(HTTP_OK));
+    
+    if (m < 0) {
         close(clientfd);
+    }
+    */
+    /* BANDWIDTH LIMIT Save */ 
     
     fprintf(stderr, "HTTP_OK=%s\n", HTTP_OK);
 }
@@ -696,6 +737,20 @@ char *connection_pair_url(int fd, connection *connections)
             }
         }
     }
+}
+
+/*********** for bandwidth, checks if the fd in connections is a client **********/
+
+bool is_client(int fd, connection *connections)
+{
+    for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+        if (connections[i] != NULL) {
+            if (connections[i]->clientfd == fd) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /*Code for Cache*/
