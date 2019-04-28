@@ -17,9 +17,9 @@ all: hash_cache list_cache
 
 # Compile step (.c files -> .o files)
 %.o: %.c $(INCLUDES) $(CC) $(CFLAGS) -c $< -o $@
-list_cache: main.o list_cache.o
+list_cache: proxy.o list_cache.o
 		$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
-hash_cache: main.o hash_cache.o
+hash_cache: proxy.o hash_cache.o
 		$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 # Linking step ( .o -> executable programs ) 
 
