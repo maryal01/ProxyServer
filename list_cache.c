@@ -19,8 +19,6 @@ struct T {
     int total_elements;
 };
 
-
-CacheBlock returnCacheBlock(CacheBlock cache, char* url);
 CacheBlock returnCacheBlock(CacheBlock cblock, char* url);
 void removeLastAccessed(Cache cache);
 
