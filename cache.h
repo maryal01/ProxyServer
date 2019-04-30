@@ -10,9 +10,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define CACHE_SIZE 50
-#define URL_SIZE 100
-
 typedef struct T* Cache;
 
 Cache createCache();
@@ -20,6 +17,8 @@ Cache createCache();
 void insertToCache(Cache cache, char* url, char* content, int content_length);
 
 char* getFromCache(Cache cache, char* url);
+
+void removeLastAccessed();
 
 int content_size(Cache cache, char* url);
 #endif

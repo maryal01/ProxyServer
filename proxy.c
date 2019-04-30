@@ -149,6 +149,10 @@ int main(int argc, char *argv[])
                     bzero(buffer, BUFSIZE);
                     m = read(i, buffer, BUFSIZE);
                     if (m <= 0) {
+                        if (m == 0) {
+                            insertToCache(proxyCache, connection_pair_url(i, connections), NULL, -107);
+                            //signifying end of tcp streaming
+                        }
                         fprintf(stderr,"read 0 or less bytes\n");
                         if (connection_exists(i, connections)) {
                             partnerfd = partner(i, connections);
@@ -203,7 +207,7 @@ int main(int argc, char *argv[])
                             send_HTTP_OK(i);
                         } else {
                             fprintf(stderr, "GET request\n");
-                            objectFromCache = getFromCache(proxyCache, url);
+                            objectFromCache = getFromCache(proxyCache, url); //insertToCache
                             size = content_size(proxyCache, url);
                             if (objectFromCache) {
                                 fprintf(stderr, "resource found in cache \n");
