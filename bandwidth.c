@@ -87,10 +87,10 @@ void limit_set_bandwidth(int bandwidth) {
 // in proxy, will happen for each of the 20 sockets
 
 int limit_write (int i) {
-    int fd = get_socket_number(i);
+    int fd = bandwidth_blocks->blocks[i]->file_descriptor;
     if(fd == -1)
         return 0;
-    BandwidthBlock block = get_block(fd);
+    BandwidthBlock block = bandwidth_blocks->blocks[i];
 
     int m = 0;
 
@@ -128,9 +128,8 @@ int limit_write (int i) {
 /***************** clearing when disconnect/ all data sent ******************/
 
 // resetting bandwidth information when connection closed
-void limit_clear(int i) {
+void limit_clear(int fd) {
     fprintf(stderr, "limit clear called, ");
-    int fd = get_socket_number(i);
     BandwidthBlock block = get_block(fd);
     block->file_descriptor = -1;
     block->write_address = 0;
@@ -166,19 +165,22 @@ void limit_read(int fd, char* data, int data_size, bool in_cache) {
     else {
         fprintf(stderr, "saving limit of size %d in not cache\n", data_size);
         memcpy(block->content + block->content_size, data, data_size);
+        fprintf(stderr, "1\n", data_size);
         block->content_size += data_size;
+        fprintf(stderr, "2\n", data_size);
     }
 }
 
 BandwidthBlock get_block(int fd) {
     for (int i = 0; i < MAX_SOCKET_NUM; i++) {
-        if (fd == bandwidth_blocks->blocks[i]->file_descriptor)
+        if (fd == bandwidth_blocks->blocks[i]->file_descriptor) {
+            fprintf(stderr, "get_block, fd is %d, i is %d\n", fd, i);
             return bandwidth_blocks->blocks[i];
+        }
     }
 }
 
 int get_socket_number(int i) {
-
     return bandwidth_blocks->blocks[i]->file_descriptor;
 }
 
