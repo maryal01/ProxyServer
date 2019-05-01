@@ -224,11 +224,13 @@ int main(int argc, char *argv[])
                             FD_CLR(partnerfd, &active_fd_set);
                             remove_connection_pair(i, connections);
                             /* BANDWIDTH LIMIT CLEAR */
-                            limit_clear(partnerfd);
+                            if (is_client(partnerfd, connections))
+                                limit_clear(partnerfd);
                         }
                         close(i);
                         /* BANDWIDTH LIMIT CLEAR */
-                        limit_clear(i);
+                        if (is_client(i, connections))
+                            limit_clear(i);
 
                         FD_CLR(i, &active_fd_set);
                         continue;
@@ -420,6 +422,7 @@ void remove_connection_pair(int fd, connection *connections)
 
 void create_connection_pair(int clientfd, int serverfd, int method, char *url, connection *connections)
 {
+    fprintf(stderr, "creating connection pair\n");
     connection tmp = malloc(sizeof(*tmp));
     assert(tmp);
     tmp->clientfd = clientfd;
@@ -433,6 +436,7 @@ void create_connection_pair(int clientfd, int serverfd, int method, char *url, c
             return;
         }
     }
+    fprintf(stderr, "creating connection pair 2\n");
 
 }
 
