@@ -57,4 +57,6 @@ Purpose:	remove the socket information if the socket is disconnected from the se
 */
 void limit_clear(int fd);
 
+void add_fd(int fd);
+
 #endif

@@ -280,6 +280,7 @@ int main(int argc, char *argv[])
                             }
                             FD_SET (serverfd, &active_fd_set);
                             create_connection_pair(i, serverfd, CONNECT, url, connections);
+                            add_fd(i);
                             send_HTTP_OK(i);
                         } else {
                             fprintf(stderr, "GET request\n");
@@ -310,6 +311,7 @@ int main(int argc, char *argv[])
                                 }
                                 FD_SET (serverfd, &active_fd_set);
                                 create_connection_pair(i, serverfd, GET, url, connections);
+                                add_fd(i);
                                 m = write(serverfd, buffer, strlen(buffer));
                                 if (m < 0) {
                                     free(request);

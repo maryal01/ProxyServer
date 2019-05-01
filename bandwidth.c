@@ -30,6 +30,7 @@ next_time = --------- + first_time
 */
 
 typedef struct BandwidthBlock {
+    int     file_descriptor;
     int     write_address; // initialized to be 0, size of what should be sent
     int     send_size;
     double  last_time; // intitialized to be 0, time of what was last sent, identifies if everything was sent
@@ -47,6 +48,7 @@ Bandwidth bandwidth_blocks;
 
 BandwidthBlock initiate_bandwidth();
 double get_wait_time (int size);
+BandwidthBlock get_block(int fd);
 
 
 /* getting wait time */
@@ -58,6 +60,7 @@ double get_wait_time (int size) {
 
 BandwidthBlock initiate_bandwidth() {
     BandwidthBlock block = malloc(sizeof(*block));
+    block->file_descriptor = -1;
     block->write_address = 0;
     block->send_size = 0;
     block->last_time = 0.0;
@@ -83,7 +86,7 @@ void limit_set_bandwidth(int bandwidth) {
 // in proxy, will happen for each of the 20 sockets
 
 int limit_write (int fd) {
-    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    BandwidthBlock block = get_block(fd);
     int m = 0;
 
     struct timeval curr;
@@ -122,7 +125,8 @@ int limit_write (int fd) {
 // resetting bandwidth information when connection closed
 void limit_clear(int fd) {
     //fprintf(stderr, "limit clear called, ");
-    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    BandwidthBlock block = get_block(fd);
+    block->file_descriptor = -1;
     block->write_address = 0;
     block->send_size = 0;
     block->last_time = 0.0;
@@ -134,7 +138,7 @@ void limit_clear(int fd) {
 /***************** saving data to send after read ******************/
 
 void limit_read(int fd, char* data, int data_size, bool in_cache) {
-    BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    BandwidthBlock block = get_block(fd);
     fprintf(stderr, "fd is %d\n", fd);
     
     if (in_cache) {
@@ -149,6 +153,19 @@ void limit_read(int fd, char* data, int data_size, bool in_cache) {
     }
 }
 
+BandwidthBlock get_block(int fd) {
+    for (int i = 0; i < MAX_SOCKET_NUM; i++) 
+        if (fd == bandwidth_blocks->blocks[i]->file_descriptor) 
+            return bandwidth_blocks->blocks[i];
+}
+
+void add_fd(int fd) {
+    for (int i = 0; i < MAX_SOCKET_NUM; i++) 
+        if (-1 == bandwidth_blocks->blocks[i]->file_descriptor) {
+            bandwidth_blocks->blocks[i]->file_descriptor = fd;
+            return;
+        }
+}
 
 
 
