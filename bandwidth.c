@@ -16,7 +16,7 @@
 
 #define SEND_SIZE 100000 // 3000k, 
 
-#define MAX_SOCKET_NUM  30  
+#define MAX_SOCKET_NUM  40  
 #define MAX_BUFFER_SIZE 10000000
 
 /*
@@ -162,11 +162,11 @@ void limit_read(int fd, char* data, int data_size, bool in_cache) {
 BandwidthBlock get_block(int fd) {
     for (int i = 0; i < MAX_SOCKET_NUM; i++) {
         if (fd == bandwidth_blocks->blocks[i]->file_descriptor) {
-            fprintf(stderr, "get_block, fd is %d, i is %d\n", fd, i);
             return bandwidth_blocks->blocks[i];
         }
     }
-    
+
+    fprintf(stderr, "is NULL\n");
     return NULL;
 }
 
