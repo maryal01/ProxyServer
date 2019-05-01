@@ -97,7 +97,7 @@ void insertToCache(Cache cache, char* url, char* content, int content_length){
         }
         updateSearchBloom(url);
     } else{
-        if(isUrlSearched(url)){
+        if(isUrlSearched(url)  && content_length > 0){
             printf("ADDING THE URL TO THE CACHE!!!!\n");
             //add to the cache
             int idx = hash_function1(url) % CACHE_SIZE;

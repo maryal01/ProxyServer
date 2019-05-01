@@ -29,7 +29,7 @@
 #define BACKLOG 20
 #define BUFSIZE 1000000
 /* max response (webpage) size */
-#define OBJECTSIZE 10000000
+#define OBJECTSIZE 20000000
 /* size of cache */
 #define CACHELINES 20
 /* client request's single line max size */
@@ -155,16 +155,16 @@ int main(int argc, char *argv[])
         for (int i = 0; i < CONCURRENTCONNECTIONS; ++i) {
             int fd = get_socket_number(i);
             m = limit_write(fd);
-            if (m < 0) {
+            // if (m < 0) {
 
-                fprintf(stderr, "ERROR writing from limiting bandwidth");
-                remove_connection_pair(fd, connections);
-                close(fd);
-                partnerfd = partner(fd, connections);
-                close(partnerfd);
-                    // BANDWIDTH LIMIT CLEAR fd info ON ERROR
-                limit_clear(fd);
-            }
+            //     fprintf(stderr, "ERROR writing from limiting bandwidth");
+            //     // remove_connection_pair(fd, connections);
+            //     close(fd);
+            //     partnerfd = partner(fd, connections);
+            //     close(partnerfd);
+            //         // BANDWIDTH LIMIT CLEAR fd info ON ERROR
+            //     limit_clear(fd);
+            // }
         }
         /* BANDWIDTH LIMIT WRITE */ 
 
@@ -212,13 +212,13 @@ int main(int argc, char *argv[])
                             }
                             remove_connection_pair(i, connections);
                             /* BANDWIDTH LIMIT CLEAR */
-                            if (is_client(partnerfd, connections))
-                                limit_clear(partnerfd);
+                            
+                            limit_clear(partnerfd);
                         }
                         close(i);
                         /* BANDWIDTH LIMIT CLEAR */
-                        if (is_client(i, connections))
-                            limit_clear(i);
+                        
+                        limit_clear(i);
 
                         FD_CLR(i, &active_fd_set);
                         continue;
@@ -419,6 +419,8 @@ void create_connection_pair(int clientfd, int serverfd, int method, char *url, c
     tmp->method = method;
     tmp->url = malloc(strlen(url) + 1);
     memcpy(tmp->url, url, strlen(url) + 1);
+    if (!tmp->url)
+        fprintf(stderr, "tmp->url is NULL\n");
 //    tmp->url = url; //change if doesn't work: TODO
 
     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
@@ -704,6 +706,8 @@ char *get_url(char *HTTP_request)
         server_path[i - starting_point] = HTTP_request[i];
     }  
 
+    if (!server_path)
+        fprintf(stderr, "server_path is NULL !!!\n");
     return server_path;
 }
 
@@ -723,7 +727,9 @@ char *connection_pair_url(int fd, connection *connections)
     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
         if (connections[i] != NULL) {
             if (connections[i]->clientfd == fd || connections[i]->serverfd == fd) {
+                fprintf(stderr, "connections[i]->url=%s\n", connections[i]->url);
                 return connections[i]->url;
+                
             }
         }
     }
