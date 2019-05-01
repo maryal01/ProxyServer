@@ -90,6 +90,9 @@ int limit_write (int fd) {
         return 0;
     BandwidthBlock block = get_block(fd);
 
+    if(!block)
+        return 0;
+
     int m = 0;
 
     struct timeval curr;
@@ -129,6 +132,7 @@ int limit_write (int fd) {
 void limit_clear(int fd) {
     fprintf(stderr, "limit clear called, ");
     BandwidthBlock block = get_block(fd);
+
     block->file_descriptor = -1;
     block->write_address = 0;
     block->send_size = 0;
@@ -142,6 +146,8 @@ void limit_clear(int fd) {
 
 void limit_read(int fd, char* data, int data_size, bool in_cache) {
     BandwidthBlock block = get_block(fd);
+    if(!block)
+        return;
     if(!block)
         fprintf(stderr, "block is NULL\n");
     fprintf(stderr, "fd is %d\n", fd);
