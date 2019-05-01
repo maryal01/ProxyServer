@@ -46,12 +46,12 @@ Bandwidth bandwidth_blocks;
 
 BandwidthBlock initiate_bandwidth();
 BandwidthBlock get_block(int fd);
-double get_wait_time (int size);
+double get_wait_time (int size, double curr_time, double last_time, double wait_time);
 
 
 /* getting wait time */
-double get_wait_time (int size) {
-    return ((double)size / (double)max_bandwidth);  
+double get_wait_time (int size, double curr_time, double last_time, double wait_time) {
+    return ((double)size / (double)max_bandwidth) - curr_time + (last_time + wait_time);  
 }
 
 /******************* initializing the interface ******************/
@@ -108,19 +108,18 @@ int limit_write (int fd) {
             limit_clear(fd);
             block->file_descriptor = fd;
         } else {
+            if (block->write_address + SEND_SIZE < block->content_size) 
+                block->send_size = SEND_SIZE;
+            else 
+                block->send_size = block->content_size - block->write_address;
             if (block->wait_time + block->last_time <= curr_time) {
-
-                if (block->write_address + SEND_SIZE < block->content_size) 
-                    block->send_size = SEND_SIZE;
-                else 
-                    block->send_size = block->content_size - block->write_address;
 
                 fprintf(stderr, "wait time is %f, ", block->wait_time);
                 fprintf(stderr, "send with bandwidth limit of size %d\n", block->send_size);
-                
+
                 m = write(fd, block->content + block->write_address, block->send_size);
                 block->write_address += block->send_size;
-                block->wait_time = get_wait_time(block->send_size);
+                block->wait_time = get_wait_time(block->send_size, curr_time, block->last_time, block->wait_time);
                 block->last_time = curr_time;                
             }
         }
@@ -188,9 +187,18 @@ int get_socket_number(int i) {
 
 void add_fd(int fd) {
     fprintf(stderr, "Adding fd %d\n", fd);
+
+    struct timeval curr;
+    gettimeofday(&curr, NULL);
+    double curr_time = (double)curr.tv_sec + (double)curr.tv_usec / 1000000.0;
+
     for (int i = 0; i < MAX_SOCKET_NUM; i++) 
         if (bandwidth_blocks->blocks[i]->file_descriptor == -1) {
             bandwidth_blocks->blocks[i]->file_descriptor = fd;
+            if(max_bandwidth != 0) {
+                bandwidth_blocks->blocks[i]->wait_time = 1.000000;
+                bandwidth_blocks->blocks[i]->last_time = curr_time;
+            }
             return;
         }
 }
