@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
                 partnerfd = partner(i, connections);
                 close(partnerfd);
                     // BANDWIDTH LIMIT CLEAR fd info ON ERROR
-                limit_clear(i);
+                limit_clear_write(i);
             }
         }
         /* BANDWIDTH LIMIT WRITE */ 
