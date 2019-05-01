@@ -1,5 +1,8 @@
 #include "cache.h"
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #define URL_SIZE 200
 void assert(char* got, char* expected, char* message){
@@ -91,8 +94,10 @@ void test6(){
     insertToCache(cache, "url", NULL, -107);
     insertToCache(cache, "url", "gfhjioyutdfghv", 14);
     char* content = getFromCache(cache, "url");
-    assert(content, "gfhjioyutdfghv", "Basic remove functionality tests\n");
+    sleep(2);
+    assert(content, "gfhjioyutdfghv", "Basic remove functionality test\n");
     removeLastAccessed(cache);
+    sleep(2);
     content = getFromCache(cache, "url");
     assert( content, NULL, "Basic remove functionality test\n");
 }
@@ -108,6 +113,7 @@ void test7(){
     insertToCache(cache, "url2", "gfhjioyutdfghv", 14);
     
     char* content = getFromCache(cache, "url2");
+    sleep(2);
     content = getFromCache(cache, "url");
     removeLastAccessed(cache);
     content = getFromCache(cache, "url2");
@@ -125,6 +131,7 @@ void test8(){
     insertToCache(cache, "url2", "gfhjioyutdfghv", 14);
     
     char* content = getFromCache(cache, "url");
+    sleep(2);
     content = getFromCache(cache, "url2");
     removeLastAccessed(cache);
     content = getFromCache(cache, "url");
@@ -142,14 +149,15 @@ void test9(){
     insertToCache(cache, "url2", "gfhjioyutdfghv", 14);
     
     char* content = getFromCache(cache, "url");
-
+    sleep(2);
     content = getFromCache(cache, "url2");
     removeLastAccessed(cache);
     insertToCache(cache, "url", "gfhjioyutdfghv", 14);
     insertToCache(cache, "url", NULL, -107);
+    sleep(2);
     content = getFromCache(cache, "url");
 
-    assert( content, NULL, "Inserting once after removing should still keep it on the table\n");
+    assert( content, "gfhjioyutdfghv", "Inserting once after removing should still keep it on the table\n");
 }
 
 void test10(){
@@ -163,7 +171,7 @@ void test10(){
     insertToCache(cache, "url2", "gfhjioyutdfghv", 14);
     
     char* content = getFromCache(cache, "url");
-
+    sleep(2);
     content = getFromCache(cache, "url2");
     removeLastAccessed(cache);
     
@@ -172,7 +180,7 @@ void test10(){
     insertToCache(cache, "url", "gfhjioyutdfghv", 14);
 
     content = getFromCache(cache, "url");
-    assert( content, "gfhjioyutdfghv", "Inserting twice after removing\n");
+    assert( content, "gfhjioyutdfghvgfhjioyutdfghv", "Inserting twice after removing\n");
 }
 
 int main(int argc, char** argv){

@@ -58,9 +58,10 @@ uint32_t  hash_function3( const char *s );
 uint32_t  hash_function1(char *key);
 uint32_t  hash_function2( const char *s );
 
-int string_to_int_num(char *content);
-int get_field_value(char *HTTP_request, char *field, char *storage);
+int string_to_int_num2(char *content);
+int get_field_value2(char *HTTP_request, char *field, char *storage);
 int getMaxAge(char* content, int size);
+
 
 Cache createCache(){
     Cache  new_cache =  malloc(sizeof(*new_cache));
@@ -91,9 +92,13 @@ void insertToCache(Cache cache, char* url, char* content, int content_length){
     }
 
     if (content_length == -107 && content == NULL){
+        if (url == NULL){
+            printf("FOUND THE BBUGGG!!!\n");
+        }
         updateSearchBloom(url);
     } else{
         if(isUrlSearched(url)){
+            printf("ADDING THE URL TO THE CACHE!!!!\n");
             //add to the cache
             int idx = hash_function1(url) % CACHE_SIZE;
             CacheBlock block = cache->cache[idx];
@@ -113,10 +118,12 @@ void insertToCache(Cache cache, char* url, char* content, int content_length){
                 memcpy(new_block->content, content, content_length);
                 memcpy(new_block->url, url, URL_SIZE);
                 if(pblock == NULL){ //it is the first element in the index
+                    //printf("Inserted at index %d\n", idx);
                     cache->cache[idx] = new_block;
                     cache_times[idx].last_accessed = time(NULL);
                     cache_times[idx].max_age = max_age;
                 } else { // it is not the first element in the index
+                    //printf("Added at index %d\n", idx);
                     pblock->next_ll = new_block;
                 }
                 updateAddedBloom(url);
@@ -161,15 +168,15 @@ void removeLastAccessed(Cache cache){
     for(int i = 0; i < CACHE_SIZE; i++){
         time_t last_accessed = cache_times[i].last_accessed;
         int max_age = cache_times[i].max_age;
-        if (remove_last > last_accessed){
-            remove_last = last_accessed;
-            index_remove = i;
-        }
         if(max_age != -1 && last_accessed != -1){
+            if (remove_last >= last_accessed){
+                remove_last = last_accessed;
+                index_remove = i;
+            }
             if(current_time - last_accessed > max_age){
-                removed = true;
                 CacheBlock cblock = cache->cache[i];
                 if(cblock != NULL){
+                    removed = true;
                     cache->cache[i] = cblock->next_ll;
                     cblock->next_ll = NULL;
                     free(cblock);
@@ -180,25 +187,34 @@ void removeLastAccessed(Cache cache){
     }
 
     //if nothing removed, remove last_access
-    if(!removed){
+    if(!removed && index_remove != -1){
         CacheBlock cblock = cache->cache[index_remove];
+        //printf("Cache Block at index %d is removed\n", index_remove);
         if(cblock != NULL){
             cache->cache[index_remove] = cblock->next_ll;
             cblock->next_ll = NULL;
             free(cblock);
-            cache_times[index_remove].max_age = cache->cache[index_remove]->max_age;
+            if(cache->cache[index_remove] != NULL){
+                cache_times[index_remove].max_age = cache->cache[index_remove]->max_age;
+            } else {
+                cache_times[index_remove].max_age = -1;
+            }
+            
         }
     }
 }
 
 char* getFromCache(Cache cache, char* url){ //update the linked list for the indices
     if(isUrlPresent(url)){
+        printf("URL IS PRESENT IN THE CACHE\n");
         int index = hash_function1(url) % CACHE_SIZE;
         CacheBlock block = cache->cache[index];
         while(block != NULL && strcmp(block->url, url) != 0){
             block = block->next_ll;
         }
         if( block != NULL){ //found the content
+            printf("URL IS PRESENT IN THE CACHE\n");
+            //printf("Got from cache: %s\n", url);
             cache_times[index].last_accessed = time(NULL);
             cache_times[index].max_age = block->max_age;
             return block->content;
@@ -206,8 +222,6 @@ char* getFromCache(Cache cache, char* url){ //update the linked list for the ind
     }
     return NULL;
 }
-
-
 
 
 /****************************** BLOOM FILTER FUNCTION *****************************************/
@@ -326,10 +340,6 @@ int getAddedBloom(int hash){ //call during retrieval
 /****************************** UTILITY FUNCTION *****************************************/
 int content_size(Cache cache, char* url)
 {
-    fprintf(stderr, "The url passed here is: %s\n", url);
-     if(url == NULL ||  cache == NULL){
-        assert("The parameters can not be null");}
-    
     uint32_t hash_value = hash_function1(url);
     uint32_t index = hash_value % CACHE_SIZE;
     
@@ -350,19 +360,19 @@ int getMaxAge(char* content, int size){
     memcpy(trimmed_object, content, size);
 
     char *max_age_field_value = calloc(OBJECTNAMESIZE, sizeof(char));
-    int status = get_field_value(trimmed_object, "Cache-Control: max-ag", 
+    int status = get_field_value2(trimmed_object, "Cache-Control: max-ag", 
                                 max_age_field_value);
 
     if (status != -1) {
-        max_age = string_to_int_num(max_age_field_value);
+        max_age = string_to_int_num2(max_age_field_value);
     }
-    free(max_age_field_value);
+    //free(max_age_field_value);
     return max_age;
 }
 
 
 
-int get_field_value(char *HTTP_request, char *field, char *storage)
+int get_field_value2(char *HTTP_request, char *field, char *storage)
 {
     bool field_not_found = true;
     int request_size = strlen(HTTP_request);
@@ -397,7 +407,7 @@ int get_field_value(char *HTTP_request, char *field, char *storage)
     return 0;
 }
 
-int power(unsigned int a, unsigned int b)
+int power2(unsigned int a, unsigned int b)
 {
     unsigned int answer = 1;
     if (b == 0) return answer;
@@ -410,7 +420,7 @@ int power(unsigned int a, unsigned int b)
     return answer;
 }
 
-int string_to_int_num(char *content)
+int string_to_int_num2(char *content)
 {
     int j = 0;
     int current_digit;
@@ -419,7 +429,7 @@ int string_to_int_num(char *content)
     int field_length = strlen(content);
     while (j < field_length) {
         current_digit = content[j] - '0';
-        content_length+= current_digit * power(10, field_length - j - 1);
+        content_length+= current_digit * power2(10, field_length - j - 1);
         j++;
     }
 

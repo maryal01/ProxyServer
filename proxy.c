@@ -150,14 +150,23 @@ int main(int argc, char *argv[])
                     m = read(i, buffer, BUFSIZE);
                     if (m <= 0) {
                         if (m == 0) {
+                            if( connection_pair_url(i, connections) == NULL){
+                                printf("FOUND THE BUG IN PROXY!!! \n");
+                            } else {
+                                 printf("CONNECTION PAIR IS NOT NULL \n");
+                            }
+                            
                             insertToCache(proxyCache, connection_pair_url(i, connections), NULL, -107);
+
                             //signifying end of tcp streaming
                         }
                         fprintf(stderr,"read 0 or less bytes\n");
                         if (connection_exists(i, connections)) {
                             partnerfd = partner(i, connections);
-                            close(partnerfd);
-                            FD_CLR(partnerfd, &active_fd_set);
+                            if (partnerfd != server) {
+                                close(partnerfd);
+                                FD_CLR(partnerfd, &active_fd_set);
+                            }
                             remove_connection_pair(i, connections);
                         }
                         close(i);
@@ -210,6 +219,7 @@ int main(int argc, char *argv[])
                             objectFromCache = getFromCache(proxyCache, url); //insertToCache
                             size = content_size(proxyCache, url);
                             if (objectFromCache) {
+                                create_connection_pair(i, server, GET, url, connections);
                                 fprintf(stderr, "resource found in cache \n");
                                 m = write(i, objectFromCache, size);
                                 if (m < 0) {
@@ -337,7 +347,8 @@ void create_connection_pair(int clientfd, int serverfd, int method, char *url, c
     tmp->clientfd = clientfd;
     tmp->serverfd = serverfd;
     tmp->method = method;
-    tmp->url = url;
+    tmp->url = malloc(strlen(url));
+    memcpy(tmp->url, url, strlen(url));
 
     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
         if (connections[i] == NULL) {
