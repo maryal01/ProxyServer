@@ -1,0 +1,46 @@
+onnection doesn't exist
+url=www.google.com:443
+CONNECT request
+strlen(HTTP_OK)=39
+saving limit of size 39 for control
+for first time, data size of 39 for control
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit of size 39
+received some dataconnection exists
+received some dataconnection exists
+saving limit of size 2380 for control
+for first time, data size of 2380 for control
+send without bandwidth limit of size 2380
+received some dataconnection exists
+received some dataconnection exists
+saving limit of size 51 for control
+for first time, data size of 51 for control
+send without bandwidth limit of size 51
+received some dataconnection exists
+received some dataconnection exists
+saving limit of size 69 for control
+for first time, data size of 69 for control
+send without bandwidth limit of size 69
+received some dataconnection exists
+received some dataconnection exists
+saving limit of size 38 for control
+for first time, data size of 38 for control
+send without bandwidth limit of size 38
+received some dataconnection exists
+saving limit of size 1969 for control
+for first time, data size of 1969 for control
+send without bandwidth limit of size 1969
+received some dataconnection exists
+saving limit of size 8508 for control
+for first time, data size of 8508 for control
+send without bandwidth limit of size 8508
+received some dataconnection exists
+saving limit of size 1758 for control
+for first time, data size of 1758 for control
+send without bandwidth limit of size 1758
+received some dataconnection exists
+received some dataread 0 or less bytes
+limit clear called, limit clear called, 
+

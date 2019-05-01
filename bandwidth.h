@@ -30,7 +30,7 @@ Parameter:  int fd, time_t curr_time, char *content, int content_size
 Purpose:	saves data to be sent with or without bandwidth controls
 
 */
-void limit_save(int fd, char* data, int size, bool in_cache);
+void limit_read(int fd, char* data, int size, bool in_cache);
 
 /* 
 parameter:  fd
@@ -56,8 +56,5 @@ parameter:  fd
 Purpose:	remove the socket information if the socket is disconnected from the server.
 */
 void limit_clear(int fd);
-
-/* controlling read for bandwidth control */
-bool limit_read_wait(int fd);
 
 #endif

@@ -213,25 +213,22 @@ int main(int argc, char *argv[])
                 {
                     fprintf(stderr, "received some data\n");
                     bzero(buffer, BUFSIZE);
-                    // wait so I could send all the message first
-                    if (!limit_read_wait(i)) {
-                        m = read(i, buffer, BUFSIZE);
-                        if (m <= 0) {
-                            fprintf(stderr,"read 0 or less bytes\n");
-                            if (connection_exists(i, connections)) {
-                                partnerfd = partner(i, connections);
-                                close(partnerfd);
-                                FD_CLR(partnerfd, &active_fd_set);
-                                remove_connection_pair(i, connections);
-                                /* BANDWIDTH LIMIT CLEAR */
-                                limit_clear(partnerfd);
-                            }
-                            close(i);
+                    m = read(i, buffer, BUFSIZE);
+                    if (m <= 0) {
+                        fprintf(stderr,"read 0 or less bytes\n");
+                        if (connection_exists(i, connections)) {
+                            partnerfd = partner(i, connections);
+                            close(partnerfd);
+                            FD_CLR(partnerfd, &active_fd_set);
+                            remove_connection_pair(i, connections);
                             /* BANDWIDTH LIMIT CLEAR */
-                            limit_clear(i);
-                            FD_CLR(i, &active_fd_set);
-                            continue;
+                            limit_clear(partnerfd);
                         }
+                        close(i);
+                        /* BANDWIDTH LIMIT CLEAR */
+                        limit_clear(i);
+                        FD_CLR(i, &active_fd_set);
+                        continue;
                     }
 
                     if (connection_exists(i, connections)) {
@@ -244,7 +241,7 @@ int main(int argc, char *argv[])
                         /* BANDWIDTH LIMIT SAVE FOR UNCACHED */
                         // more explanations in bandwidth.h file
                         if (is_client(partnerfd, connections))
-                            limit_save(partnerfd, buffer, m, false);
+                            limit_read(partnerfd, buffer, m, false);
                         
                         // simply write to server (e.g. facebook.com)
                         // if partnerfd is a server
@@ -291,7 +288,7 @@ int main(int argc, char *argv[])
                             if (objectFromCache) {
                                 fprintf(stderr, "resource found in cache \n");
                                 /* BANDWIDTH LIMIT SAVE (commented out original) */
-                                limit_save(i, objectFromCache, size, true);
+                                limit_read(i, objectFromCache, size, true);
                                 /* ORIGINAL
                                 m = write(i, objectFromCache, size);
                                 if (m < 0) {
@@ -661,7 +658,7 @@ void send_HTTP_OK(int clientfd)
     fprintf(stderr, "strlen(HTTP_OK)=%d\n", strlen(HTTP_OK));
     /* BANDWIDTH LIMIT Save */ 
     // commented out original
-    limit_save(clientfd, HTTP_OK, strlen(HTTP_OK), false);
+    limit_read(clientfd, HTTP_OK, strlen(HTTP_OK), false);
     /* ORIGINAL
     m = write(clientfd, HTTP_OK, strlen(HTTP_OK));
     
