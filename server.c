@@ -417,7 +417,7 @@ void create_connection_pair(int clientfd, int serverfd, int method, char *url, c
     tmp->clientfd = clientfd;
     tmp->serverfd = serverfd;
     tmp->method = method;
-    tmp->url = malloc(strlen(url));
+    tmp->url = malloc(strlen(url) + 1);
     memcpy(tmp->url, url, strlen(url) + 1);
 //    tmp->url = url; //change if doesn't work: TODO
 
