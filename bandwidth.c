@@ -141,6 +141,17 @@ void limit_clear(int i) {
     block->content_size = 0;
 } 
 
+void limit_clear_write(int i) {
+    BandwidthBlock block = bandwidth_blocks->blocks[i];
+    block->file_descriptor = -1;
+    block->write_address = 0;
+    block->send_size = 0;
+    block->last_time = 0.0;
+    block->wait_time = 0.0;
+    bzero(block->content, MAX_BUFFER_SIZE);
+    block->content_size = 0;
+}
+
 /***************** saving data to send after read ******************/
 
 void limit_read(int fd, char* data, int data_size, bool in_cache) {
@@ -167,6 +178,7 @@ BandwidthBlock get_block(int fd) {
 }
 
 int get_socket_number(int i) {
+
     return bandwidth_blocks->blocks[i]->file_descriptor;
 }
 

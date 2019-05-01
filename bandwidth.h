@@ -56,6 +56,7 @@ parameter:  fd
 Purpose:	remove the socket information if the socket is disconnected from the server.
 */
 void limit_clear(int fd);
+void limit_clear_write(int i);
 
 void add_fd(int fd);
 
