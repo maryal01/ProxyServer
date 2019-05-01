@@ -18,7 +18,7 @@ void insertToCache(Cache cache, char* url, char* content, int content_length);
 
 char* getFromCache(Cache cache, char* url);
 
-void removeLastAccessed();
+void removeLastAccessed(Cache cache);
 
 int content_size(Cache cache, char* url);
 #endif

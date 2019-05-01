@@ -5,6 +5,7 @@
 #include <time.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
 #include "cache.h"
 
 #define CACHE_SIZE 67
@@ -12,6 +13,7 @@
 #define URL_SIZE 200
 #define FILTER_SIZE 256 //4 64 bit uints
 #define MAX_AGE 3600
+#define OBJECTNAMESIZE 100
 
 //cacheBlock in cache
 typedef struct CacheBlock{
@@ -19,6 +21,7 @@ typedef struct CacheBlock{
     char* content;
     int content_length;
     time_t first_added;
+    int max_age;
     struct CacheBlock* next_ll; //next element in the hashtable as a result of chaining
 } *CacheBlock;
 
@@ -28,14 +31,17 @@ struct T {
     int total_elements;
 };
 
+typedef struct MaxAgeTime {
+    time_t last_accessed;
+    int max_age;
+} MaxAgeTime;
+
 //bloom filters
 uint64_t add_filter[4];
 uint64_t search_filter[4];
 
 //least recently used removal
-int hash_indices[CACHE_SIZE];
-int head_index;
-int tail_index;
+MaxAgeTime cache_times[CACHE_SIZE];
 
 void updateAddedBloom(char* url);
 int getMaxCache(char* content);
@@ -49,16 +55,19 @@ void setSearchBloom(int hash);
 int isUrlSearched(char* url);
 
 uint32_t  hash_function3( const char *s );
-uint32_t hash_function1(char *key);
+uint32_t  hash_function1(char *key);
 uint32_t  hash_function2( const char *s );
+
+int string_to_int_num(char *content);
+int get_field_value(char *HTTP_request, char *field, char *storage);
+int getMaxAge(char* content, int size);
 
 Cache createCache(){
     Cache  new_cache =  malloc(sizeof(*new_cache));
-    head_index = 0;
-    tail_index = 0;
     for(int i = 0; i < CACHE_SIZE; i++){ //initializing the cache elements
         new_cache->cache[i] = NULL;
-        hash_indices[i] = -1;
+        cache_times[i].last_accessed = -1;
+        cache_times[i].max_age = -1;
     }
     for(int i = 0; i < 4; i++ ){
         add_filter[i] = 0;
@@ -75,8 +84,11 @@ CacheBlock createCacheBlock(){
     return block;
 }
 
-
 void insertToCache(Cache cache, char* url, char* content, int content_length){
+    int total_elements = cache->total_elements;
+    if(total_elements/ CACHE_SIZE > 0.75){
+        removeLastAccessed(cache);
+    }
 
     if (content_length == -107 && content == NULL){
         updateSearchBloom(url);
@@ -96,10 +108,14 @@ void insertToCache(Cache cache, char* url, char* content, int content_length){
                 new_block->content = malloc(content_length);
                 new_block->url     = malloc(URL_SIZE);
                 new_block->content_length = content_length;
+                int max_age = getMaxAge(content, content_length);
+                new_block->max_age = max_age;
                 memcpy(new_block->content, content, content_length);
                 memcpy(new_block->url, url, URL_SIZE);
                 if(pblock == NULL){ //it is the first element in the index
                     cache->cache[idx] = new_block;
+                    cache_times[idx].last_accessed = time(NULL);
+                    cache_times[idx].max_age = max_age;
                 } else { // it is not the first element in the index
                     pblock->next_ll = new_block;
                 }
@@ -137,11 +153,45 @@ void updateSearchBloom(char* url){
     setSearchBloom(hash3);
 }
 
-void removeLastAccessed(){ //TODO: implement this with the int hash table
-    return;
+void removeLastAccessed(Cache cache){
+    time_t current_time = time(NULL);
+    time_t remove_last = time(NULL);
+    int index_remove  = -1;
+    bool removed = false;
+    for(int i = 0; i < CACHE_SIZE; i++){
+        time_t last_accessed = cache_times[i].last_accessed;
+        int max_age = cache_times[i].max_age;
+        if (remove_last > last_accessed){
+            remove_last = last_accessed;
+            index_remove = i;
+        }
+        if(max_age != -1 && last_accessed != -1){
+            if(current_time - last_accessed > max_age){
+                removed = true;
+                CacheBlock cblock = cache->cache[i];
+                if(cblock != NULL){
+                    cache->cache[i] = cblock->next_ll;
+                    cblock->next_ll = NULL;
+                    free(cblock);
+                    cache_times[i].max_age = cache->cache[i]->max_age;
+                }
+            }
+        }
+    }
+
+    //if nothing removed, remove last_access
+    if(!removed){
+        CacheBlock cblock = cache->cache[index_remove];
+        if(cblock != NULL){
+            cache->cache[index_remove] = cblock->next_ll;
+            cblock->next_ll = NULL;
+            free(cblock);
+            cache_times[index_remove].max_age = cache->cache[index_remove]->max_age;
+        }
+    }
 }
 
-char* getFromCache(Cache cache, char* url){
+char* getFromCache(Cache cache, char* url){ //update the linked list for the indices
     if(isUrlPresent(url)){
         int index = hash_function1(url) % CACHE_SIZE;
         CacheBlock block = cache->cache[index];
@@ -149,12 +199,18 @@ char* getFromCache(Cache cache, char* url){
             block = block->next_ll;
         }
         if( block != NULL){ //found the content
+            cache_times[index].last_accessed = time(NULL);
+            cache_times[index].max_age = block->max_age;
             return block->content;
         }
     }
     return NULL;
 }
 
+
+
+
+/****************************** BLOOM FILTER FUNCTION *****************************************/
 int isUrlPresent(char* url){
     int hash1 = hash_function1(url) % FILTER_SIZE;
     int hash2 = hash_function2(url) % FILTER_SIZE;
@@ -217,7 +273,6 @@ int getSearchBloom(int hash){
 
    return (filter << (63 - index)) >> 63 ;
 }
-
 
 void setAddedBloom(int hash){ //call during insertion
     int index = -1;
@@ -289,9 +344,86 @@ int content_size(Cache cache, char* url)
     return -1;
 }
 
-int getMaxCache(char* content){
-    (void) content;
-    return MAX_AGE;
+int getMaxAge(char* content, int size){
+    int max_age = MAX_AGE;
+    char* trimmed_object = malloc(size * sizeof(char));
+    memcpy(trimmed_object, content, size);
+
+    char *max_age_field_value = calloc(OBJECTNAMESIZE, sizeof(char));
+    int status = get_field_value(trimmed_object, "Cache-Control: max-ag", 
+                                max_age_field_value);
+
+    if (status != -1) {
+        max_age = string_to_int_num(max_age_field_value);
+    }
+    free(max_age_field_value);
+    return max_age;
+}
+
+
+
+int get_field_value(char *HTTP_request, char *field, char *storage)
+{
+    bool field_not_found = true;
+    int request_size = strlen(HTTP_request);
+    bool match = true;
+
+    for (int i = 0; i < request_size; i++) {
+        if (HTTP_request[i] == '\n') {
+            match = true;
+            for (int k = 0; k < (int)strlen(field); k++) {
+                if (HTTP_request[i + k + 1] != field[k]) {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match) {
+                i = i + strlen(field) + 3;
+                int j = 0;
+                while (HTTP_request[i] != '\n' && HTTP_request[i] != '\r'){
+                    storage[j] = HTTP_request[i];
+                    i++;
+                    j++;
+                }
+
+                storage[j] = '\0';
+                field_not_found = false;
+                break;
+            }
+        }
+    }
+    if (field_not_found) return -1;
+    return 0;
+}
+
+int power(unsigned int a, unsigned int b)
+{
+    unsigned int answer = 1;
+    if (b == 0) return answer;
+
+    answer = a;
+    for (unsigned int i = 1; i < b; i++) {
+        answer *= a;
+    }
+
+    return answer;
+}
+
+int string_to_int_num(char *content)
+{
+    int j = 0;
+    int current_digit;
+    int content_length = 0;
+
+    int field_length = strlen(content);
+    while (j < field_length) {
+        current_digit = content[j] - '0';
+        content_length+= current_digit * power(10, field_length - j - 1);
+        j++;
+    }
+
+    return content_length;
 }
 
 /****************************** HASH FUNCTION *****************************************/
