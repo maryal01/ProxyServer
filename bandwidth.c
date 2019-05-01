@@ -142,6 +142,8 @@ void limit_clear(int fd) {
 
 void limit_read(int fd, char* data, int data_size, bool in_cache) {
     BandwidthBlock block = get_block(fd);
+    if(!block)
+        fprintf(stderr, "block is NULL\n");
     fprintf(stderr, "fd is %d\n", fd);
     
     if (in_cache) {
@@ -152,9 +154,8 @@ void limit_read(int fd, char* data, int data_size, bool in_cache) {
     else {
         fprintf(stderr, "saving limit of size %d in not cache\n", data_size);
         memcpy(block->content + block->content_size, data, data_size);
-        fprintf(stderr, "1\n", data_size);
+        fprintf(stderr, "content: %d and data size: %d\n", block->content_size, data_size);
         block->content_size += data_size;
-        fprintf(stderr, "2\n", data_size);
     }
 }
 
@@ -165,6 +166,8 @@ BandwidthBlock get_block(int fd) {
             return bandwidth_blocks->blocks[i];
         }
     }
+    
+    return NULL;
 }
 
 int get_socket_number(int i) {
