@@ -656,17 +656,9 @@ void send_HTTP_OK(int clientfd)
     int m;
     char *HTTP_OK = "HTTP/1.1 200 Connection Established\r\n\r\n";
     fprintf(stderr, "strlen(HTTP_OK)=%d\n", strlen(HTTP_OK));
-    /* BANDWIDTH LIMIT Save */ 
-    // commented out original
-    limit_read(clientfd, HTTP_OK, strlen(HTTP_OK), false);
-    /* ORIGINAL
     m = write(clientfd, HTTP_OK, strlen(HTTP_OK));
-    
-    if (m < 0) {
+    if (m < 0) 
         close(clientfd);
-    }
-    */
-    /* BANDWIDTH LIMIT Save */ 
     
     fprintf(stderr, "HTTP_OK=%s\n", HTTP_OK);
 }
