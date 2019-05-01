@@ -49,7 +49,6 @@ Bandwidth bandwidth_blocks;
 BandwidthBlock initiate_bandwidth();
 BandwidthBlock get_block(int fd);
 double get_wait_time (int size);
-int get_socket_number(int i);
 
 
 /* getting wait time */
@@ -85,12 +84,11 @@ void limit_set_bandwidth(int bandwidth) {
 /******************* writing ******************/
 
 // in proxy, will happen for each of the 20 sockets
-
-int limit_write (int i) {
-    int fd = bandwidth_blocks->blocks[i]->file_descriptor;
+// the limit_write takes in the socket number
+int limit_write (int fd) {
     if(fd == -1)
         return 0;
-    BandwidthBlock block = bandwidth_blocks->blocks[i];
+    BandwidthBlock block = get_block(fd);
 
     int m = 0;
 
@@ -139,17 +137,6 @@ void limit_clear(int fd) {
     bzero(block->content, MAX_BUFFER_SIZE);
     block->content_size = 0;
 } 
-
-void limit_clear_write(int i) {
-    BandwidthBlock block = bandwidth_blocks->blocks[i];
-    block->file_descriptor = -1;
-    block->write_address = 0;
-    block->send_size = 0;
-    block->last_time = 0.0;
-    block->wait_time = 0.0;
-    bzero(block->content, MAX_BUFFER_SIZE);
-    block->content_size = 0;
-}
 
 /***************** saving data to send after read ******************/
 

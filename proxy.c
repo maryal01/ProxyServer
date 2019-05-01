@@ -178,15 +178,17 @@ int main(int argc, char *argv[])
         /* BANDWIDTH LIMIT WRITE */ 
         // for each socket, write to client if fd is in 
         for (int i = 0; i < CONCURRENTCONNECTIONS; ++i) {
-            m = limit_write(i);
+            int fd = get_socket_number(i);
+            m = limit_write(fd);
             if (m < 0) {
+
                 fprintf(stderr, "ERROR writing from limiting bandwidth");
-                remove_connection_pair(i, connections);
-                close(i);
-                partnerfd = partner(i, connections);
+                remove_connection_pair(fd, connections);
+                close(fd);
+                partnerfd = partner(fd, connections);
                 close(partnerfd);
                     // BANDWIDTH LIMIT CLEAR fd info ON ERROR
-                limit_clear_write(i);
+                limit_clear(fd);
             }
         }
         /* BANDWIDTH LIMIT WRITE */ 

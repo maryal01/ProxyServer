@@ -59,5 +59,6 @@ void limit_clear(int fd);
 void limit_clear_write(int i);
 
 void add_fd(int fd);
+int get_socket_number(int i);
 
 #endif
