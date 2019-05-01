@@ -222,11 +222,14 @@ int main(int argc, char *argv[])
                             FD_CLR(partnerfd, &active_fd_set);
                             remove_connection_pair(i, connections);
                             /* BANDWIDTH LIMIT CLEAR */
-                            limit_clear(partnerfd);
+                            if (is_client(partnerfd, connections))
+                                limit_clear(partnerfd);
                         }
                         close(i);
                         /* BANDWIDTH LIMIT CLEAR */
-                        limit_clear(i);
+                        if (is_client(i, connections))
+                            limit_clear(i);
+
                         FD_CLR(i, &active_fd_set);
                         continue;
                     }
@@ -289,6 +292,7 @@ int main(int argc, char *argv[])
                             if (objectFromCache) {
                                 fprintf(stderr, "resource found in cache \n");
                                 /* BANDWIDTH LIMIT SAVE (commented out original) */
+                                add_fd(i);
                                 limit_read(i, objectFromCache, size, true);
                                 /* ORIGINAL
                                 m = write(i, objectFromCache, size);
