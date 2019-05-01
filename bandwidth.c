@@ -13,9 +13,6 @@
 #include <netdb.h>
 #include <bandwidth.h>
 
-
-#define SEND_SIZE 100000 // 3000k, 
-
 #define MAX_SOCKET_NUM  40  
 #define MAX_BUFFER_SIZE 10000000
 
@@ -44,6 +41,7 @@ typedef struct Bandwidth {
 } *Bandwidth;
 
 int max_bandwidth; // 0 if there is no bandwidth_limiting specified by client
+int SEND_SIZE;
 Bandwidth bandwidth_blocks;
 
 BandwidthBlock initiate_bandwidth();
@@ -74,6 +72,7 @@ BandwidthBlock initiate_bandwidth() {
 void limit_set_bandwidth(int bandwidth) { 
     fprintf(stderr, "bandwidth initialized\n");
     max_bandwidth = bandwidth; // bits per second to bytes per second
+    SEND_SIZE = bandwidth;
     bandwidth_blocks = malloc(sizeof(*bandwidth_blocks));
 
     for(int i = 0; i < MAX_SOCKET_NUM; i++){
@@ -88,6 +87,7 @@ void limit_set_bandwidth(int bandwidth) {
 int limit_write (int fd) {
     if(fd == -1)
         return 0;
+
     BandwidthBlock block = get_block(fd);
 
     if(!block)
@@ -106,6 +106,7 @@ int limit_write (int fd) {
             fprintf(stderr, "send without bandwidth limit\n");
             m = write(fd, block->content, block->content_size);
             limit_clear(fd);
+            block->file_descriptor = fd;
         } else {
             if (block->wait_time + block->last_time <= curr_time) {
 
@@ -113,8 +114,10 @@ int limit_write (int fd) {
                     block->send_size = SEND_SIZE;
                 else 
                     block->send_size = block->content_size - block->write_address;
+
                 fprintf(stderr, "wait time is %f, ", block->wait_time);
                 fprintf(stderr, "send with bandwidth limit of size %d\n", block->send_size);
+                
                 m = write(fd, block->content + block->write_address, block->send_size);
                 block->write_address += block->send_size;
                 block->wait_time = get_wait_time(block->send_size);
@@ -132,6 +135,8 @@ int limit_write (int fd) {
 void limit_clear(int fd) {
     fprintf(stderr, "limit clear called, ");
     BandwidthBlock block = get_block(fd);
+    if(!block)
+        return;
 
     block->file_descriptor = -1;
     block->write_address = 0;
@@ -145,6 +150,7 @@ void limit_clear(int fd) {
 /***************** saving data to send after read ******************/
 
 void limit_read(int fd, char* data, int data_size, bool in_cache) {
+    fprintf(stderr, "saving\n");
     BandwidthBlock block = get_block(fd);
     if(!block)
         return;
@@ -167,9 +173,7 @@ void limit_read(int fd, char* data, int data_size, bool in_cache) {
 
 BandwidthBlock get_block(int fd) {
     for (int i = 0; i < MAX_SOCKET_NUM; i++) {
-        fprintf(stderr, "%d ", i);
         if (fd == bandwidth_blocks->blocks[i]->file_descriptor) {
-            fprintf(stderr, "\n");
             return bandwidth_blocks->blocks[i];
         }
     }
@@ -183,6 +187,7 @@ int get_socket_number(int i) {
 }
 
 void add_fd(int fd) {
+    fprintf(stderr, "Adding fd %d\n", fd);
     for (int i = 0; i < MAX_SOCKET_NUM; i++) 
         if (bandwidth_blocks->blocks[i]->file_descriptor == -1) {
             bandwidth_blocks->blocks[i]->file_descriptor = fd;
