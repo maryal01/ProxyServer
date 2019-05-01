@@ -161,7 +161,9 @@ void limit_read(int fd, char* data, int data_size, bool in_cache) {
 
 BandwidthBlock get_block(int fd) {
     for (int i = 0; i < MAX_SOCKET_NUM; i++) {
+        fprintf(stderr, "%d ", i);
         if (fd == bandwidth_blocks->blocks[i]->file_descriptor) {
+            fprintf(stderr, "\n");
             return bandwidth_blocks->blocks[i];
         }
     }
