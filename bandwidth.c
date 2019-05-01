@@ -69,7 +69,7 @@ BandwidthBlock initiate_bandwidth() {
 
 // assumes that there is a bandwidth control if this function is called
 void limit_set_bandwidth(int bandwidth) { 
-    fprintf(stderr, "bandwidth initialized\n");
+    //fprintf(stderr, "bandwidth initialized\n");
     max_bandwidth = bandwidth; // bits per second to bytes per second
     bandwidth_blocks = malloc(sizeof(*bandwidth_blocks));
 
@@ -94,7 +94,7 @@ int limit_write (int fd) {
     // when block->wait_time + block->last_time <= curr_time, bandwidth is set
     if (block->content_size > block->write_address) { 
         if (max_bandwidth == 0) {
-            fprintf(stderr, "send without bandwidth limit\n");
+            //fprintf(stderr, "send without bandwidth limit\n");
             m = write(fd, block->content, block->content_size);
             limit_clear(fd);
         } else {
@@ -104,8 +104,8 @@ int limit_write (int fd) {
                     block->send_size = SEND_SIZE;
                 else 
                     block->send_size = block->content_size - block->write_address;
-                fprintf(stderr, "wait time is %f, ", block->wait_time);
-                fprintf(stderr, "send with bandwidth limit of size %d\n", block->send_size);
+                //fprintf(stderr, "wait time is %f, ", block->wait_time);
+                //fprintf(stderr, "send with bandwidth limit of size %d\n", block->send_size);
                 m = write(fd, block->content + block->write_address, block->send_size);
                 block->write_address += block->send_size;
                 block->wait_time = get_wait_time(block->send_size);
@@ -121,7 +121,7 @@ int limit_write (int fd) {
 
 // resetting bandwidth information when connection closed
 void limit_clear(int fd) {
-    fprintf(stderr, "limit clear called, ");
+    //fprintf(stderr, "limit clear called, ");
     BandwidthBlock block = bandwidth_blocks->blocks[fd];
     block->write_address = 0;
     block->send_size = 0;
@@ -135,14 +135,15 @@ void limit_clear(int fd) {
 
 void limit_read(int fd, char* data, int data_size, bool in_cache) {
     BandwidthBlock block = bandwidth_blocks->blocks[fd];
+    fprintf(stderr, "fd is %d\n", fd);
     
     if (in_cache) {
-        fprintf(stderr, "saving limit of size %d in cache\n", data_size);
+        //fprintf(stderr, "saving limit of size %d in cache\n", data_size);
         memcpy(block->content, data, data_size);
         block->content_size = data_size;
     }
     else {
-        fprintf(stderr, "saving limit of size %d in not cache\n", data_size);
+        //fprintf(stderr, "saving limit of size %d in not cache\n", data_size);
         memcpy(block->content + block->content_size, data, data_size);
         block->content_size += data_size;
     }
