@@ -11,7 +11,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <bandwidth.h>
+#include "bandwidth.h"
 
 #define MAX_SOCKET_NUM  40  
 #define MAX_BUFFER_SIZE 10000000

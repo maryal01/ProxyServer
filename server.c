@@ -22,7 +22,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <bandwidth.h>
+#include "bandwidth.h"
 #include "cache.h"
 
 /* pending connection queue's max length */
