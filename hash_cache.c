@@ -92,9 +92,10 @@ void insertToCache(Cache cache, char* url, char* content, int content_length){
     }
 
     if (content_length == -107 && content == NULL){
-        if (url == NULL){
-            printf("FOUND THE BBUGGG!!!\n");
-        }
+        // if (url == NULL){
+        //     fprintf(stderr, "url inside insertToCache = %s\n", url);
+        //     fprintf(stderr, "FOUND THE BBUGGG!!!\n");
+        // }
         updateSearchBloom(url);
     } else{
         if(isUrlSearched(url)  && content_length > 0){
@@ -152,6 +153,7 @@ void updateAddedBloom(char* url){
 }
 
 void updateSearchBloom(char* url){
+    
     int hash1 = hash_function1(url) % FILTER_SIZE;
     int hash2 = hash_function2(url) % FILTER_SIZE;
     int hash3 = hash_function3(url) % FILTER_SIZE;
@@ -441,7 +443,18 @@ uint32_t hash_function1(char *key)
 {
     uint32_t hash = 0;
     uint32_t i = 0;
+
+    // if (key == NULL) {
+    //     fprintf(stderr, "key is null inside hash_function1\n");
+    // } else {
+    //     fprintf(stderr, "trying to print inside hash_function1\n");
+        
+    //     fprintf(stderr, "key is %s inside hash_function1\n", key);
+    // }
+
+
     char character = key[i];
+    printf("worked for key=%s\n", key);
     while(character != '\0'){
         i++;
         hash += character;

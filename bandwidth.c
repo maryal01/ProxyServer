@@ -153,9 +153,9 @@ void limit_read(int fd, char* data, int data_size, bool in_cache) {
     BandwidthBlock block = get_block(fd);
     if(!block)
         return;
-    if(!block)
-        fprintf(stderr, "block is NULL\n");
-    fprintf(stderr, "fd is %d\n", fd);
+    // if(!block)
+    //     fprintf(stderr, "block is NULL\n");
+    // fprintf(stderr, "fd is %d\n", fd);
     
     if (in_cache) {
         fprintf(stderr, "saving limit of size %d in cache\n", data_size);

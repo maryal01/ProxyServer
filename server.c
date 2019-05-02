@@ -24,6 +24,8 @@
 #include <netdb.h>
 #include "bandwidth.h"
 #include "cache.h"
+#include <sys/types.h>
+#include <sys/stat.h>
 
 /* pending connection queue's max length */
 #define BACKLOG 20
@@ -91,6 +93,7 @@ char *get_url(char *HTTP_request);
 int connection_pair_method(int fd, connection *connections);
 char *connection_pair_url(int fd, connection *connections);
 int content_size(Cache cache, char* url);
+void print_active_fds(connection *connections);
 
 
 
@@ -192,19 +195,35 @@ int main(int argc, char *argv[])
                     bzero(buffer, BUFSIZE);
                     m = read(i, buffer, BUFSIZE);
                     if (m <= 0) {
-                         if (m == 0) {
-                            if( connection_pair_url(i, connections) == NULL){
-                                printf("FOUND THE BUG IN PROXY!!! \n");
-                            } else {
-                                 printf("CONNECTION PAIR IS NOT NULL \n");
-                            }
-                            
-                            insertToCache(proxyCache, connection_pair_url(i, connections), NULL, -107);
-
-                            //signifying end of tcp streaming
-                        }
                         fprintf(stderr,"read 0 or less bytes\n");
+                        // struct stat buf;
+                        // if (fstat(i, &buf) == -1) {
+                        //     fprintf(stderr, "fd=%d is closed or not accessible\n", i);
+                        // }
+                        // else {
+                        //     fprintf(stderr, "fd=%d is accessible\n", i);
+                        // }
+                         
                         if (connection_exists(i, connections)) {
+
+                            // print_active_fds(connections);
+                            // if( connection_pair_url(i, connections) == NULL){
+                            //     fprintf(stderr, "FOUND THE BUG IN PROXY!!! \n");
+                            // } else {
+                            //      fprintf(stderr, "CONNECTION PAIR IS NOT NULL \n");
+                            // }
+                            
+                            //signifying end of tcp streaming
+                            if (m == 0) {
+                                if(connection_pair_method(i, connections) == GET) {
+                                    if (!is_client(i, connections)) {
+                                        // fprintf(stderr, "problem caused inside m == 0 inserToCache\n");
+                                        insertToCache(proxyCache, connection_pair_url(i, connections), NULL, -107);
+                                    }
+                                }
+                            }
+
+                            
                             partnerfd = partner(i, connections);
                             if (partnerfd != server) {
                                 close(partnerfd);
@@ -242,6 +261,7 @@ int main(int argc, char *argv[])
                             m = write(partnerfd, buffer, m);
                             if (m < 0) {
                                 remove_connection_pair(i, connections);
+                                // fprintf(stderr, "removed pair of %d and %d inside resource NOT found in 1\n", i, partnerfd);
                                 close(i);
                                 partnerfd = partner(i, connections);
                                 close(partnerfd);
@@ -273,6 +293,7 @@ int main(int argc, char *argv[])
                             }
                             FD_SET (serverfd, &active_fd_set);
                             create_connection_pair(i, serverfd, CONNECT, url, connections);
+                            // fprintf(stderr, "created pair of %d and %d 1\n", i, serverfd);
                             add_fd(i);
                             send_HTTP_OK(i);
                         } else {
@@ -281,6 +302,7 @@ int main(int argc, char *argv[])
                             size = content_size(proxyCache, url);
                             if (objectFromCache) {
                                 create_connection_pair(i, server, GET, url, connections);
+                                // fprintf(stderr, "created pair of %d and %d 2\n", i, server);
                                 fprintf(stderr, "resource found in cache \n");
                                 /* BANDWIDTH LIMIT SAVE (commented out original) */
                                 add_fd(i);
@@ -306,6 +328,7 @@ int main(int argc, char *argv[])
                                 }
                                 FD_SET (serverfd, &active_fd_set);
                                 create_connection_pair(i, serverfd, GET, url, connections);
+                                // fprintf(stderr, "created pair of %d and %d 3\n", i, serverfd);
                                 add_fd(i);
                                 m = write(serverfd, buffer, strlen(buffer));
                                 if (m < 0) {
@@ -314,6 +337,7 @@ int main(int argc, char *argv[])
                                     close(i);
                                     partnerfd = partner(i, connections);
                                     close(partnerfd);
+                                    // fprintf(stderr, "removed pair of %d and %d 2\n", i, partnerfd);
                                     continue;
                                 }
                                 fprintf(stderr, "request sent\n");
@@ -411,7 +435,7 @@ void remove_connection_pair(int fd, connection *connections)
 
 void create_connection_pair(int clientfd, int serverfd, int method, char *url, connection *connections)
 {
-    fprintf(stderr, "creating connection pair\n");
+    // fprintf(stderr, "creating connection pair\n");
     connection tmp = malloc(sizeof(*tmp));
     assert(tmp);
     tmp->clientfd = clientfd;
@@ -419,8 +443,10 @@ void create_connection_pair(int clientfd, int serverfd, int method, char *url, c
     tmp->method = method;
     tmp->url = malloc(strlen(url) + 1);
     memcpy(tmp->url, url, strlen(url) + 1);
-    if (!tmp->url)
-        fprintf(stderr, "tmp->url is NULL\n");
+    // if (!tmp->url)
+    //     printf("tmp->url is NULL\n");
+    // else
+    //     printf("tmp->url is %s\n", tmp->url);
 //    tmp->url = url; //change if doesn't work: TODO
 
     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
@@ -429,7 +455,7 @@ void create_connection_pair(int clientfd, int serverfd, int method, char *url, c
             return;
         }
     }
-    fprintf(stderr, "creating connection pair 2\n");
+    // fprintf(stderr, "creating connection pair 2\n");
 
 }
 
@@ -706,8 +732,8 @@ char *get_url(char *HTTP_request)
         server_path[i - starting_point] = HTTP_request[i];
     }  
 
-    if (!server_path)
-        fprintf(stderr, "server_path is NULL !!!\n");
+    // if (!server_path)
+    //     fprintf(stderr, "server_path is NULL !!!\n");
     return server_path;
 }
 
@@ -724,16 +750,32 @@ int connection_pair_method(int fd, connection *connections)
 
 char *connection_pair_url(int fd, connection *connections)
 {
+    // fprintf(stderr, "entered connection_pair_url()\n");
     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
         if (connections[i] != NULL) {
             if (connections[i]->clientfd == fd || connections[i]->serverfd == fd) {
-                fprintf(stderr, "connections[i]->url=%s\n", connections[i]->url);
+                // fprintf(stderr, "connections[i]->url=%s\n", connections[i]->url);
                 return connections[i]->url;
                 
             }
         }
     }
+    // fprintf(stderr, "connection_pair_url returned NULL on fd=%d\n", fd);
+    
+    return NULL;
+
 }
+
+/* TODO: delete this test function */
+// void print_active_fds(connection *connections)
+// {
+//     for (int i = 0; i < CONCURRENTCONNECTIONS; i++) {
+//         if (connections[i] != NULL) {
+//                 fprintf(stderr, "%d %d ", connections[i]->serverfd, connections[i]->clientfd);
+//         }
+//     }
+//     fprintf(stderr, "\n");
+// }
 
 /*********** for bandwidth, checks if the fd in connections is a client **********/
 

@@ -1,0 +1,3829 @@
+==16412== Memcheck, a memory error detector
+==16412== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==16412== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==16412== Command: ./hash_cache 9160
+==16412== 
+bandwidth initialized
+connected
+received some data
+CONNECT www.messenger.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.messenger.com:443
+
+
+connection doesn't exist
+url=www.messenger.com:443
+CONNECT request
+Adding fd 4
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 3140 in not cache
+content: 0 and data size: 3140
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 281 in not cache
+content: 0 and data size: 281
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 471 in not cache
+content: 0 and data size: 471
+send without bandwidth limit
+limit clear called, connected
+received some data
+CONNECT clients1.google.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: clients1.google.com:443
+
+
+connection doesn't exist
+url=clients1.google.com:443
+CONNECT request
+Adding fd 6
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 3487 in not cache
+content: 0 and data size: 3487
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 719 in not cache
+content: 0 and data size: 719
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 517 in not cache
+content: 0 and data size: 517
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 616 in not cache
+content: 0 and data size: 616
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+CONNECT www.google.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.google.com:443
+
+
+connection doesn't exist
+url=www.google.com:443
+CONNECT request
+Adding fd 8
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+CONNECT www.youtube.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.youtube.com:443
+
+
+connection doesn't exist
+url=www.youtube.com:443
+CONNECT request
+Adding fd 10
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 329 in not cache
+content: 0 and data size: 329
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 684 in not cache
+content: 0 and data size: 684
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 5920 in not cache
+content: 0 and data size: 5920
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 17085 in not cache
+content: 0 and data size: 17085
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 10
+saving limit of size 70 in not cache
+content: 0 and data size: 70
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+connected
+received some data
+CONNECT i.ytimg.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: i.ytimg.com:443
+
+
+connection doesn't exist
+url=i.ytimg.com:443
+CONNECT request
+Adding fd 12
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 83117 in not cache
+content: 0 and data size: 83117
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 19154 in not cache
+content: 0 and data size: 19154
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 296 in not cache
+content: 0 and data size: 296
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 488 in not cache
+content: 0 and data size: 488
+send without bandwidth limit
+limit clear called, connected
+received some data
+CONNECT r1---sn-ab5szne7.googlevideo.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: r1---sn-ab5szne7.googlevideo.com:443
+
+
+connection doesn't exist
+url=r1---sn-ab5szne7.googlevideo.com:443
+CONNECT request
+Adding fd 14
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+connected
+received some data
+CONNECT r1---sn-ab5szne7.googlevideo.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: r1---sn-ab5szne7.googlevideo.com:443
+
+
+connection doesn't exist
+url=r1---sn-ab5szne7.googlevideo.com:443
+CONNECT request
+Adding fd 16
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 14
+saving limit of size 4763 in not cache
+content: 0 and data size: 4763
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 16
+saving limit of size 4763 in not cache
+content: 0 and data size: 4763
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 12434 in not cache
+content: 0 and data size: 12434
+received some data
+connection exists
+saving
+fd is 14
+saving limit of size 230 in not cache
+content: 0 and data size: 230
+received some data
+connection exists
+received some data
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 83
+Connection: keep-alive
+
+0Q0O0M0K0I0	+
+connection doesn't exist
+url=http://ocsp.pki.goog/GTSGIAG3
+GET request
+resource NOT found in cache 
+Adding fd 18
+request sent
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 16
+saving limit of size 230 in not cache
+content: 0 and data size: 230
+received some data
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 83
+Connection: keep-alive
+
+0Q0O0M0K0I0	+
+connection doesn't exist
+url=http://ocsp.pki.goog/GTSGIAG3
+GET request
+resource NOT found in cache 
+Adding fd 19
+request sent
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+connected
+received some data
+CONNECT r1---sn-ab5szne7.googlevideo.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: r1---sn-ab5szne7.googlevideo.com:443
+
+
+connection doesn't exist
+url=r1---sn-ab5szne7.googlevideo.com:443
+CONNECT request
+Adding fd 22
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+connected
+received some data
+CONNECT r1---sn-ab5szne7.googlevideo.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: r1---sn-ab5szne7.googlevideo.com:443
+
+
+connection doesn't exist
+url=r1---sn-ab5szne7.googlevideo.com:443
+CONNECT request
+Adding fd 24
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 23969 in not cache
+content: 0 and data size: 23969
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 5389 in not cache
+content: 0 and data size: 5389
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 4763 in not cache
+content: 0 and data size: 4763
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 2475 in not cache
+content: 0 and data size: 2475
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 4763 in not cache
+content: 0 and data size: 4763
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 230 in not cache
+content: 0 and data size: 230
+received some data
+connection exists
+received some data
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 83
+Connection: keep-alive
+
+0Q0O0M0K0I0	+
+connection doesn't exist
+url=http://ocsp.pki.goog/GTSGIAG3
+GET request
+resource NOT found in cache 
+Adding fd 26
+request sent
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 230 in not cache
+content: 0 and data size: 230
+received some data
+CONNECT yt3.ggpht.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: yt3.ggpht.com:443
+
+
+connection doesn't exist
+url=yt3.ggpht.com:443
+CONNECT request
+Adding fd 27
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 83
+Connection: keep-alive
+
+0Q0O0M0K0I0	+
+connection doesn't exist
+url=http://ocsp.pki.goog/GTSGIAG3
+GET request
+resource NOT found in cache 
+Adding fd 29
+request sent
+received some data
+connection exists
+saving
+fd is 27
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 27
+saving limit of size 20344 in not cache
+content: 0 and data size: 20344
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 27
+saving limit of size 14535 in not cache
+content: 0 and data size: 14535
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 79 in not cache
+content: 0 and data size: 79
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 275 in not cache
+content: 0 and data size: 275
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 14
+saving limit of size 254 in not cache
+content: 0 and data size: 254
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 16
+saving limit of size 254 in not cache
+content: 0 and data size: 254
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 10
+saving limit of size 15906 in not cache
+content: 0 and data size: 15906
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 33504 in not cache
+content: 0 and data size: 33504
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 22
+saving limit of size 48228 in not cache
+content: 0 and data size: 48228
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 33504 in not cache
+content: 0 and data size: 33504
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 24
+saving limit of size 33836 in not cache
+content: 0 and data size: 33836
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 61424 in not cache
+content: 0 and data size: 61424
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 22
+saving limit of size 121878 in not cache
+content: 0 and data size: 121878
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 51182 in not cache
+content: 0 and data size: 51182
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 82947 in not cache
+content: 0 and data size: 82947
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 22
+saving limit of size 34863 in not cache
+content: 0 and data size: 34863
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 55840 in not cache
+content: 0 and data size: 55840
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 24
+saving limit of size 179486 in not cache
+content: 0 and data size: 179486
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 24
+saving limit of size 162440 in not cache
+content: 0 and data size: 162440
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 24
+saving limit of size 59387 in not cache
+content: 0 and data size: 59387
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 140 in not cache
+content: 0 and data size: 140
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 10
+saving limit of size 247 in not cache
+content: 0 and data size: 247
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 27920 in not cache
+content: 0 and data size: 27920
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 24
+saving limit of size 182671 in not cache
+content: 0 and data size: 182671
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 24
+saving limit of size 32595 in not cache
+content: 0 and data size: 32595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 39 in not cache
+content: 0 and data size: 39
+received some data
+read 0 or less bytes
+limit clear called, limit clear called, is NULL
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, limit clear called, is NULL
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+GET http://eecs.tufts.edu/wp-signup.php?new=cs.tufts.edu HTTP/1.1
+Host: eecs.tufts.edu
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cookie: _ga=GA1.2.1347667726.1554819848; __utma=189197748.1347667726.1554819848.1554914228.1554920992.5; __utmz=189197748.1554920992.5.4.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); __hstc=189197748.a5749072a3b29e62349e2e95cbf0a575.1555032803376.1555032803376.1555456148941.2; hubspotutk=a5749072a3b29e62349e2e95cbf0a575; visid_incap_496857=huO9HOWoRg++HraAF11Xyj7xvVwAAAAAQUIPAAAAAACxardeNyyUzHiIwodDcP/h; _gid=GA1.2.1142264645.1556673516
+Upgrade-Insecure-Requests: 1
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+connection doesn't exist
+url=http://eecs.tufts.edu/wp-signup.php?new=cs.tufts.edu
+GET request
+resource NOT found in cache 
+Adding fd 12
+request sent
+received some data
+connection exists
+inserting to cache
+saving
+fd is 12
+saving limit of size 473 in not cache
+content: 0 and data size: 473
+send without bandwidth limit
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, limit clear called, is NULL
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+connected
+received some data
+GET http://eecs.tufts.edu/favicon.ico HTTP/1.1
+Host: eecs.tufts.edu
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: image/webp,*/*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cookie: _ga=GA1.2.1347667726.1554819848; __utma=189197748.1347667726.1554819848.1554914228.1554920992.5; __utmz=189197748.1554920992.5.4.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); __hstc=189197748.a5749072a3b29e62349e2e95cbf0a575.1555032803376.1555032803376.1555456148941.2; hubspotutk=a5749072a3b29e62349e2e95cbf0a575; visid_incap_496857=huO9HOWoRg++HraAF11Xyj7xvVwAAAAAQUIPAAAAAACxardeNyyUzHiIwodDcP/h; _gid=GA1.2.1142264645.1556673516
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+connection doesn't exist
+url=http://eecs.tufts.edu/favicon.ico
+GET request
+resource NOT found in cache 
+Adding fd 4
+request sent
+received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 471 in not cache
+content: 0 and data size: 471
+send without bandwidth limit
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+connected
+received some data
+CONNECT www.youtube.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.youtube.com:443
+
+
+connection doesn't exist
+url=www.youtube.com:443
+CONNECT request
+Adding fd 4
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 333 in not cache
+content: 0 and data size: 333
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, connected
+received some data
+GET http://www.cs.cmu.edu/~prs/bio.html HTTP/1.1
+Host: www.cs.cmu.edu
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cookie: SHIBLOCATION=scsweb; BIGipServer~SCS~cs-userdir-pool-80=2715353728.20480.0000
+Upgrade-Insecure-Requests: 1
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+connection doesn't exist
+url=http://www.cs.cmu.edu/~prs/bio.html
+GET request
+resource NOT found in cache 
+Adding fd 4
+request sent
+received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 4381 in not cache
+content: 0 and data size: 4381
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 4361 in not cache
+content: 0 and data size: 4361
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, connected
+received some data
+CONNECT www.cs.cmu.edu:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.cs.cmu.edu:443
+
+
+connection doesn't exist
+url=www.cs.cmu.edu:443
+CONNECT request
+Adding fd 6
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 161 in not cache
+content: 0 and data size: 161
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 485 in not cache
+content: 0 and data size: 485
+send without bandwidth limit
+limit clear called, connected
+received some data
+CONNECT www.youtube.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.youtube.com:443
+
+
+connection doesn't exist
+url=www.youtube.com:443
+CONNECT request
+Adding fd 8
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 434 in not cache
+content: 0 and data size: 434
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, connected
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+GET http://www.cs.cmu.edu/~dga/dga-headshot.jpg HTTP/1.1
+Host: www.cs.cmu.edu
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cookie: SHIBLOCATION=scsweb; BIGipServer~SCS~cs-userdir-pool-80=2715353728.20480.0000
+Upgrade-Insecure-Requests: 1
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+connection doesn't exist
+url=http://www.cs.cmu.edu/~dga/dga-headshot.jpg
+GET request
+resource NOT found in cache 
+Adding fd 4
+request sent
+received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 6860 in not cache
+content: 0 and data size: 6860
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 13412 in not cache
+content: 0 and data size: 13412
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 26064 in not cache
+content: 0 and data size: 26064
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 43060 in not cache
+content: 0 and data size: 43060
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 64092 in not cache
+content: 0 and data size: 64092
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65160 in not cache
+content: 0 and data size: 65160
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 129247 in not cache
+content: 0 and data size: 129247
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+received some data
+CONNECT r1---sn-ab5szne7.googlevideo.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: r1---sn-ab5szne7.googlevideo.com:443
+
+
+connection doesn't exist
+url=r1---sn-ab5szne7.googlevideo.com:443
+CONNECT request
+Adding fd 6
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 71973 in not cache
+content: 0 and data size: 71973
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 147 in not cache
+content: 0 and data size: 147
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65535 in not cache
+content: 0 and data size: 65535
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 110284 in not cache
+content: 0 and data size: 110284
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 131070 in not cache
+content: 0 and data size: 131070
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 254664 in not cache
+content: 0 and data size: 254664
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 205564 in not cache
+content: 0 and data size: 205564
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 647707 in not cache
+content: 0 and data size: 647707
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 327675 in not cache
+content: 0 and data size: 327675
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 179823 in not cache
+content: 0 and data size: 179823
+received some data
+CONNECT www.youtube.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.youtube.com:443
+
+
+connection doesn't exist
+url=www.youtube.com:443
+CONNECT request
+Adding fd 8
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 348270 in not cache
+content: 0 and data size: 348270
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 253077 in not cache
+content: 0 and data size: 253077
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 160301 in not cache
+content: 0 and data size: 160301
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 65160 in not cache
+content: 0 and data size: 65160
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 105704 in not cache
+content: 0 and data size: 105704
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 8
+saving limit of size 663 in not cache
+content: 0 and data size: 663
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 114236 in not cache
+content: 0 and data size: 114236
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 73692 in not cache
+content: 0 and data size: 73692
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+inserting to cache
+saving
+fd is 4
+saving limit of size 17585 in not cache
+content: 0 and data size: 17585
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 72592 in not cache
+content: 0 and data size: 72592
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 6
+saving limit of size 277682 in not cache
+content: 0 and data size: 277682
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, connected
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+CONNECT d1b10bmlvqabco.cloudfront.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: d1b10bmlvqabco.cloudfront.net:443
+
+
+connection doesn't exist
+url=d1b10bmlvqabco.cloudfront.net:443
+CONNECT request
+Adding fd 4
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 152 in not cache
+content: 0 and data size: 152
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 117368 in not cache
+content: 0 and data size: 117368
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 650 in not cache
+content: 0 and data size: 650
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 66229 in not cache
+content: 0 and data size: 66229
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, connected
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 4
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+connected
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 6
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 4
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+connection exists
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 8
+request sent
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 6
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 9
+request sent
+send without bandwidth limit
+limit clear called, connected
+received some data
+CONNECT www.youtube.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.youtube.com:443
+
+
+connection doesn't exist
+url=www.youtube.com:443
+CONNECT request
+Adding fd 12
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 333 in not cache
+content: 0 and data size: 333
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, connected
+received some data
+CONNECT www.messenger.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.messenger.com:443
+
+
+connection doesn't exist
+url=www.messenger.com:443
+CONNECT request
+Adding fd 12
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 267 in not cache
+content: 0 and data size: 267
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 13980 in not cache
+content: 0 and data size: 13980
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 61793 in not cache
+content: 0 and data size: 61793
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 6
+saving limit of size 1595 in not cache
+content: 0 and data size: 1595
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+connection exists
+saving
+fd is 12
+saving limit of size 35 in not cache
+content: 0 and data size: 35
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 259 in not cache
+content: 0 and data size: 259
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 12
+saving limit of size 35 in not cache
+content: 0 and data size: 35
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 251 in not cache
+content: 0 and data size: 251
+send without bandwidth limit
+limit clear called, connected
+received some data
+CONNECT static.xx.fbcdn.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: static.xx.fbcdn.net:443
+
+
+connection doesn't exist
+url=static.xx.fbcdn.net:443
+CONNECT request
+Adding fd 6
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+connected
+received some data
+CONNECT static.xx.fbcdn.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: static.xx.fbcdn.net:443
+
+
+connection doesn't exist
+url=static.xx.fbcdn.net:443
+CONNECT request
+Adding fd 7
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+connected
+received some data
+connection exists
+received some data
+CONNECT static.xx.fbcdn.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: static.xx.fbcdn.net:443
+
+
+connection doesn't exist
+url=static.xx.fbcdn.net:443
+CONNECT request
+Adding fd 15
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 3140 in not cache
+content: 0 and data size: 3140
+received some data
+CONNECT static.xx.fbcdn.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: static.xx.fbcdn.net:443
+
+
+connection doesn't exist
+url=static.xx.fbcdn.net:443
+CONNECT request
+Adding fd 17
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 4
+saving limit of size 43736 in not cache
+content: 0 and data size: 43736
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 7
+saving limit of size 3141 in not cache
+content: 0 and data size: 3141
+received some data
+connection exists
+received some data
+CONNECT static.xx.fbcdn.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: static.xx.fbcdn.net:443
+
+
+connection doesn't exist
+url=static.xx.fbcdn.net:443
+CONNECT request
+Adding fd 23
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 4
+saving limit of size 54515 in not cache
+content: 0 and data size: 54515
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 1731 in not cache
+content: 0 and data size: 1731
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 3140 in not cache
+content: 0 and data size: 3140
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 17
+saving limit of size 3140 in not cache
+content: 0 and data size: 3140
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 7
+saving limit of size 7676 in not cache
+content: 0 and data size: 7676
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 23
+saving limit of size 3141 in not cache
+content: 0 and data size: 3141
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 29744 in not cache
+content: 0 and data size: 29744
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 17
+saving limit of size 14161 in not cache
+content: 0 and data size: 14161
+received some data
+CONNECT dvngeac8rg9mb.cloudfront.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: dvngeac8rg9mb.cloudfront.net:443
+
+
+connection doesn't exist
+url=dvngeac8rg9mb.cloudfront.net:443
+CONNECT request
+Adding fd 27
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 23
+saving limit of size 74253 in not cache
+content: 0 and data size: 74253
+received some data
+connection exists
+received some data
+CONNECT dvngeac8rg9mb.cloudfront.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: dvngeac8rg9mb.cloudfront.net:443
+
+
+connection doesn't exist
+url=dvngeac8rg9mb.cloudfront.net:443
+CONNECT request
+Adding fd 30
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 27
+saving limit of size 152 in not cache
+content: 0 and data size: 152
+received some data
+CONNECT dvngeac8rg9mb.cloudfront.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: dvngeac8rg9mb.cloudfront.net:443
+
+
+connection doesn't exist
+url=dvngeac8rg9mb.cloudfront.net:443
+CONNECT request
+Adding fd 5
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+connection exists
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 30
+saving limit of size 152 in not cache
+content: 0 and data size: 152
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 16
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+read 0 or less bytes
+limit clear called, is NULL
+limit clear called, received some data
+read 0 or less bytes
+limit clear called, is NULL
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 27
+saving limit of size 21889 in not cache
+content: 0 and data size: 21889
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 15
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 152 in not cache
+content: 0 and data size: 152
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 30
+saving limit of size 136849 in not cache
+content: 0 and data size: 136849
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 16
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+received some data
+CONNECT www.gstatic.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.gstatic.com:443
+
+
+connection doesn't exist
+url=www.gstatic.com:443
+CONNECT request
+Adding fd 22
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 216346 in not cache
+content: 0 and data size: 216346
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 24
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 253008 in not cache
+content: 0 and data size: 253008
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 252424 in not cache
+content: 0 and data size: 252424
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 258864 in not cache
+content: 0 and data size: 258864
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 33
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 371874 in not cache
+content: 0 and data size: 371874
+received some data
+connection exists
+saving
+fd is 16
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 1000000 in not cache
+content: 0 and data size: 1000000
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 35
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 183469 in not cache
+content: 0 and data size: 183469
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 33
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+received some data
+CONNECT messenger.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: messenger.com:443
+
+
+connection doesn't exist
+url=messenger.com:443
+CONNECT request
+Adding fd 37
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 10038 in not cache
+content: 0 and data size: 10038
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 27590 in not cache
+content: 0 and data size: 27590
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 36513 in not cache
+content: 0 and data size: 36513
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 35
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 39
+request sent
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 33
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+connection exists
+saving
+fd is 37
+saving limit of size 3139 in not cache
+content: 0 and data size: 3139
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 41
+request sent
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 632 in not cache
+content: 0 and data size: 632
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 111925 in not cache
+content: 0 and data size: 111925
+received some data
+connection exists
+saving
+fd is 35
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 43
+request sent
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 2715 in not cache
+content: 0 and data size: 2715
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 304466 in not cache
+content: 0 and data size: 304466
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 45
+request sent
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 47
+request sent
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 3236 in not cache
+content: 0 and data size: 3236
+received some data
+CONNECT scontent.fzty2-1.fna.fbcdn.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: scontent.fzty2-1.fna.fbcdn.net:443
+
+
+connection doesn't exist
+url=scontent.fzty2-1.fna.fbcdn.net:443
+CONNECT request
+Adding fd 49
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 5652 in not cache
+content: 0 and data size: 5652
+received some data
+connection exists
+saving
+fd is 49
+saving limit of size 3127 in not cache
+content: 0 and data size: 3127
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 14273 in not cache
+content: 0 and data size: 14273
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 16
+saving limit of size 19844 in not cache
+content: 0 and data size: 19844
+received some data
+connection exists
+saving
+fd is 37
+saving limit of size 633 in not cache
+content: 0 and data size: 633
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 6802 in not cache
+content: 0 and data size: 6802
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 31782 in not cache
+content: 0 and data size: 31782
+received some data
+connection exists
+received some data
+POST http://ocsp.digicert.com/ HTTP/1.1
+Host: ocsp.digicert.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 83
+Connection: keep-alive
+
+0Q0O0M0K0I0	+
+connection doesn't exist
+url=http://ocsp.digicert.com/
+GET request
+resource NOT found in cache 
+Adding fd 52
+request sent
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+CONNECT edge-chat.messenger.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: edge-chat.messenger.com:443
+
+
+connection doesn't exist
+url=edge-chat.messenger.com:443
+CONNECT request
+Adding fd 53
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 35 in not cache
+content: 0 and data size: 35
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 342 in not cache
+content: 0 and data size: 342
+received some data
+CONNECT facebook.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: facebook.com:443
+
+
+connection doesn't exist
+url=facebook.com:443
+CONNECT request
+Adding fd 55
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 315 in not cache
+content: 0 and data size: 315
+received some data
+connection exists
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 12
+saving limit of size 2786 in not cache
+content: 0 and data size: 2786
+received some data
+connection exists
+saving
+fd is 53
+saving limit of size 3139 in not cache
+content: 0 and data size: 3139
+received some data
+connection exists
+saving
+fd is 55
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+received some data
+CONNECT 1-edge-chat.messenger.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: 1-edge-chat.messenger.com:443
+
+
+connection doesn't exist
+url=1-edge-chat.messenger.com:443
+CONNECT request
+Adding fd 58
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 35 in not cache
+content: 0 and data size: 35
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 24
+saving limit of size 28960 in not cache
+content: 0 and data size: 28960
+received some data
+connection exists
+saving
+fd is 53
+saving limit of size 268 in not cache
+content: 0 and data size: 268
+received some data
+connection exists
+saving
+fd is 55
+saving limit of size 267 in not cache
+content: 0 and data size: 267
+received some data
+connection exists
+saving
+fd is 58
+saving limit of size 3140 in not cache
+content: 0 and data size: 3140
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 2414 in not cache
+content: 0 and data size: 2414
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 33466 in not cache
+content: 0 and data size: 33466
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 55
+saving limit of size 857 in not cache
+content: 0 and data size: 857
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 33
+saving limit of size 6213 in not cache
+content: 0 and data size: 6213
+received some data
+connection exists
+saving
+fd is 58
+saving limit of size 600 in not cache
+content: 0 and data size: 600
+received some data
+CONNECT edge-chat.messenger.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: edge-chat.messenger.com:443
+
+
+connection doesn't exist
+url=edge-chat.messenger.com:443
+CONNECT request
+Adding fd 60
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 60
+saving limit of size 218 in not cache
+content: 0 and data size: 218
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 35
+saving limit of size 3351 in not cache
+content: 0 and data size: 3351
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 60
+saving limit of size 155 in not cache
+content: 0 and data size: 155
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 60
+saving limit of size 234 in not cache
+content: 0 and data size: 234
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 58
+saving limit of size 35 in not cache
+content: 0 and data size: 35
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 58
+saving limit of size 178 in not cache
+content: 0 and data size: 178
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 1486 in not cache
+content: 0 and data size: 1486
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 17376 in not cache
+content: 0 and data size: 17376
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 15
+saving limit of size 677 in not cache
+content: 0 and data size: 677
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 17130 in not cache
+content: 0 and data size: 17130
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 30
+saving limit of size 4939 in not cache
+content: 0 and data size: 4939
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 3029 in not cache
+content: 0 and data size: 3029
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 1286 in not cache
+content: 0 and data size: 1286
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 639 in not cache
+content: 0 and data size: 639
+received some data
+connection exists
+saving
+fd is 33
+saving limit of size 1276 in not cache
+content: 0 and data size: 1276
+received some data
+connection exists
+saving
+fd is 35
+saving limit of size 818 in not cache
+content: 0 and data size: 818
+received some data
+connection exists
+saving
+fd is 60
+saving limit of size 147 in not cache
+content: 0 and data size: 147
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 11700 in not cache
+content: 0 and data size: 11700
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 30
+saving limit of size 4353 in not cache
+content: 0 and data size: 4353
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 557 in not cache
+content: 0 and data size: 557
+received some data
+CONNECT www.youtube.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.youtube.com:443
+
+
+connection doesn't exist
+url=www.youtube.com:443
+CONNECT request
+Adding fd 62
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 15
+saving limit of size 1276 in not cache
+content: 0 and data size: 1276
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 16
+saving limit of size 14480 in not cache
+content: 0 and data size: 14480
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 16
+saving limit of size 13661 in not cache
+content: 0 and data size: 13661
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 727 in not cache
+content: 0 and data size: 727
+send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+connected
+received some data
+connection exists
+saving
+fd is 27
+saving limit of size 2513 in not cache
+content: 0 and data size: 2513
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 33
+saving limit of size 28960 in not cache
+content: 0 and data size: 28960
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 6972 in not cache
+content: 0 and data size: 6972
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 8342 in not cache
+content: 0 and data size: 8342
+received some data
+connection exists
+saving
+fd is 33
+saving limit of size 25908 in not cache
+content: 0 and data size: 25908
+received some data
+connection exists
+saving
+fd is 35
+saving limit of size 1965 in not cache
+content: 0 and data size: 1965
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 58
+saving limit of size 35 in not cache
+content: 0 and data size: 35
+received some data
+connection exists
+saving
+fd is 62
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+received some data
+CONNECT dvngeac8rg9mb.cloudfront.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: dvngeac8rg9mb.cloudfront.net:443
+
+
+connection doesn't exist
+url=dvngeac8rg9mb.cloudfront.net:443
+CONNECT request
+Adding fd 64
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 287 in not cache
+content: 0 and data size: 287
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 12447 in not cache
+content: 0 and data size: 12447
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 49
+saving limit of size 41593 in not cache
+content: 0 and data size: 41593
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+CONNECT dvngeac8rg9mb.cloudfront.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: dvngeac8rg9mb.cloudfront.net:443
+
+
+connection doesn't exist
+url=dvngeac8rg9mb.cloudfront.net:443
+CONNECT request
+Adding fd 65
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 30
+saving limit of size 1360 in not cache
+content: 0 and data size: 1360
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 5225 in not cache
+content: 0 and data size: 5225
+received some data
+connection exists
+saving
+fd is 6
+saving limit of size 902 in not cache
+content: 0 and data size: 902
+received some data
+connection exists
+saving
+fd is 16
+saving limit of size 31856 in not cache
+content: 0 and data size: 31856
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 3083 in not cache
+content: 0 and data size: 3083
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 4108 in not cache
+content: 0 and data size: 4108
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 3226 in not cache
+content: 0 and data size: 3226
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 39096 in not cache
+content: 0 and data size: 39096
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 60
+saving limit of size 129 in not cache
+content: 0 and data size: 129
+received some data
+connection exists
+saving
+fd is 62
+saving limit of size 595 in not cache
+content: 0 and data size: 595
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 64
+saving limit of size 152 in not cache
+content: 0 and data size: 152
+received some data
+CONNECT piazza.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: piazza.com:443
+
+
+connection doesn't exist
+url=piazza.com:443
+CONNECT request
+Adding fd 67
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 16
+saving limit of size 16540 in not cache
+content: 0 and data size: 16540
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 9354 in not cache
+content: 0 and data size: 9354
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 62
+saving limit of size 193028 in not cache
+content: 0 and data size: 193028
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 65
+saving limit of size 152 in not cache
+content: 0 and data size: 152
+received some data
+CONNECT www.youtube-nocookie.com:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: www.youtube-nocookie.com:443
+
+
+connection doesn't exist
+url=www.youtube-nocookie.com:443
+CONNECT request
+Adding fd 69
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 5
+saving limit of size 2945 in not cache
+content: 0 and data size: 2945
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 64
+saving limit of size 3587 in not cache
+content: 0 and data size: 3587
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 67
+saving limit of size 5470 in not cache
+content: 0 and data size: 5470
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+saving
+fd is 12
+saving limit of size 1388 in not cache
+content: 0 and data size: 1388
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 1347 in not cache
+content: 0 and data size: 1347
+received some data
+connection exists
+saving
+fd is 33
+saving limit of size 1347 in not cache
+content: 0 and data size: 1347
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 65
+saving limit of size 3855 in not cache
+content: 0 and data size: 3855
+received some data
+connection exists
+saving
+fd is 69
+saving limit of size 212 in not cache
+content: 0 and data size: 212
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, connected
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 62
+saving limit of size 6420 in not cache
+content: 0 and data size: 6420
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 67
+saving limit of size 51 in not cache
+content: 0 and data size: 51
+received some data
+POST http://ocsp.godaddy.com/ HTTP/1.1
+Host: ocsp.godaddy.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/ocsp-request
+Content-Length: 76
+Connection: keep-alive
+
+0J0H0F0D0B0	+
+connection doesn't exist
+url=http://ocsp.godaddy.com/
+GET request
+resource NOT found in cache 
+Adding fd 72
+request sent
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 16
+saving limit of size 1568 in not cache
+content: 0 and data size: 1568
+received some data
+connection exists
+saving
+fd is 15
+saving limit of size 7350 in not cache
+content: 0 and data size: 7350
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 251516 in not cache
+content: 0 and data size: 251516
+received some data
+connection exists
+saving
+fd is 24
+saving limit of size 3916 in not cache
+content: 0 and data size: 3916
+received some data
+connection exists
+saving
+fd is 33
+saving limit of size 3084 in not cache
+content: 0 and data size: 3084
+received some data
+connection exists
+saving
+fd is 35
+saving limit of size 29400 in not cache
+content: 0 and data size: 29400
+received some data
+connection exists
+saving
+fd is 69
+saving limit of size 19148 in not cache
+content: 0 and data size: 19148
+received some data
+CONNECT d1b10bmlvqabco.cloudfront.net:443 HTTP/1.1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0
+Proxy-Connection: keep-alive
+Connection: keep-alive
+Host: d1b10bmlvqabco.cloudfront.net:443
+
+
+connection doesn't exist
+url=d1b10bmlvqabco.cloudfront.net:443
+CONNECT request
+Adding fd 73
+strlen(HTTP_OK)=39
+HTTP_OK=HTTP/1.1 200 Connection Established
+
+
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+received some data
+connection exists
+received some data
+connection exists
+saving
+fd is 22
+saving limit of size 39805 in not cache
+content: 0 and data size: 39805
+received some data
+connection exists
+saving
+fd is 62
+saving limit of size 32097 in not cache
+content: 0 and data size: 32097
+received some data
+connection exists
+received some data
+connection exists
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, received some data
+connection exists
+saving
+fd is 16
+saving limit of size 1686 in not cache
+content: 0 and data size: 1686
+received some data
+connection exists
+saving
+fd is 62
+saving limit of size 70 in not cache
+content: 0 and data size: 70
+received some data
+connection exists
+saving
+fd is 73
+saving limit of size 152 in not cache
+content: 0 and data size: 152
+send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, send without bandwidth limit
+limit clear called, --16412:0: aspacem <<< SHOW_SEGMENTS: out_of_memory (78 segments)
+--16412:0: aspacem 11 segment names in 12 slots
+--16412:0: aspacem freelist begins at 381
+--16412:0: aspacem (0,4,4) /usr/sup/valgrind-3.11.0/lib/valgrind/memcheck-amd64-linux
+--16412:0: aspacem (1,67,3) /h/btavad01/Desktop/networks/Project/NetworksFinalProject/hash_cache
+--16412:0: aspacem (2,140,3) /usr/lib64/ld-2.17.so
+--16412:0: aspacem (3,166,1) /tmp/vgdb-pipe-shared-mem-vgdb-16412-by-btavad01-on-comp112-02
+--16412:0: aspacem (4,233,4) /usr/sup/valgrind-3.11.0/lib/valgrind/vgpreload_core-amd64-linux.so
+--16412:0: aspacem (5,305,4) /usr/sup/valgrind-3.11.0/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--16412:0: aspacem (6,381,0) [free slot: size=17  next=0]
+--16412:0: aspacem (7,402,4) /usr/lib64/libm-2.17.so
+--16412:0: aspacem (8,430,4) /usr/lib64/libc-2.17.so
+--16412:0: aspacem (9,458,4) /usr/lib64/libnss_files-2.17.so
+--16412:0: aspacem (10,494,4) /usr/lib64/libnss_dns-2.17.so
+--16412:0: aspacem (11,528,4) /usr/lib64/libresolv-2.17.so
+--16412:0: aspacem   0: RSVN 0000000000-00003fffff 4194304 ----- SmFixed
+--16412:0: aspacem   1: file 0000400000-0000405fff   24576 r-xT- d=0x028 i=73320604 o=0       (1,67)
+--16412:0: aspacem   2: RSVN 0000406000-0000604fff 2093056 ----- SmFixed
+--16412:0: aspacem   3: file 0000605000-0000605fff    4096 r---- d=0x028 i=73320604 o=20480   (1,67)
+--16412:0: aspacem   4: file 0000606000-0000606fff    4096 rw--- d=0x028 i=73320604 o=24576   (1,67)
+--16412:0: aspacem   5: RSVN 0000607000-0003ffffff     57m ----- SmFixed
+--16412:0: aspacem   6: file 0004000000-0004021fff  139264 r-xT- d=0x801 i=33631181 o=0       (2,140)
+--16412:0: aspacem   7: anon 0004022000-0004024fff   12288 rw---
+--16412:0: aspacem   8:      0004025000-0004054fff  196608
+--16412:0: aspacem   9: anon 0004055000-0004057fff   12288 rw---
+--16412:0: aspacem  10:      0004058000-0004220fff 1871872
+--16412:0: aspacem  11: file 0004221000-0004221fff    4096 r---- d=0x801 i=33631181 o=135168  (2,140)
+--16412:0: aspacem  12: file 0004222000-0004222fff    4096 rw--- d=0x801 i=33631181 o=139264  (2,140)
+--16412:0: aspacem  13: anon 0004223000-0004223fff    4096 rw---
+--16412:0: aspacem  14: anon 0004224000-0004224fff    4096 rwx--
+--16412:0: aspacem  15: RSVN 0004225000-0004a23fff 8384512 ----- SmLower
+--16412:0: aspacem  16: file 0004a24000-0004a24fff    4096 r-xT- d=0x03b i=80229118 o=0       (4,233)
+--16412:0: aspacem  17: file 0004a25000-0004c23fff 2093056 ----- d=0x03b i=80229118 o=4096    (4,233)
+--16412:0: aspacem  18: file 0004c24000-0004c24fff    4096 r---- d=0x03b i=80229118 o=0       (4,233)
+--16412:0: aspacem  19: file 0004c25000-0004c25fff    4096 rw--- d=0x03b i=80229118 o=4096    (4,233)
+--16412:0: aspacem  20: file 0004c26000-0004c34fff   61440 r-xT- d=0x03b i=80979356 o=0       (5,305)
+--16412:0: aspacem  21: file 0004c35000-0004e33fff 2093056 ----- d=0x03b i=80979356 o=61440   (5,305)
+--16412:0: aspacem  22: file 0004e34000-0004e34fff    4096 r---- d=0x03b i=80979356 o=57344   (5,305)
+--16412:0: aspacem  23: file 0004e35000-0004e35fff    4096 rw--- d=0x03b i=80979356 o=61440   (5,305)
+--16412:0: aspacem  24: file 0004e36000-0004f36fff 1052672 r-xT- d=0x801 i=33631196 o=0       (7,402)
+--16412:0: aspacem  25: file 0004f37000-0005135fff 2093056 ----- d=0x801 i=33631196 o=1052672 (7,402)
+--16412:0: aspacem  26: file 0005136000-0005136fff    4096 r---- d=0x801 i=33631196 o=1048576 (7,402)
+--16412:0: aspacem  27: file 0005137000-0005137fff    4096 rw--- d=0x801 i=33631196 o=1052672 (7,402)
+--16412:0: aspacem  28: file 0005138000-00052f9fff 1843200 r-xT- d=0x801 i=33631188 o=0       (8,430)
+--16412:0: aspacem  29: file 00052fa000-00054f9fff 2097152 ----- d=0x801 i=33631188 o=1843200 (8,430)
+--16412:0: aspacem  30: file 00054fa000-00054fdfff   16384 r---- d=0x801 i=33631188 o=1843200 (8,430)
+--16412:0: aspacem  31: file 00054fe000-00054fffff    8192 rw--- d=0x801 i=33631188 o=1859584 (8,430)
+--16412:0: aspacem  32: anon 0005500000-0005504fff   20480 rw---
+--16412:0: aspacem  33: anon 0005505000-00353fcfff    766m rwx-H
+--16412:0: aspacem  34: file 00353fd000-0035408fff   49152 r-xT- d=0x801 i=33647457 o=0       (9,458)
+--16412:0: aspacem  35: file 0035409000-0035607fff 2093056 ----- d=0x801 i=33647457 o=49152   (9,458)
+--16412:0: aspacem  36: file 0035608000-0035608fff    4096 r---- d=0x801 i=33647457 o=45056   (9,458)
+--16412:0: aspacem  37: file 0035609000-0035609fff    4096 rw--- d=0x801 i=33647457 o=49152   (9,458)
+--16412:0: aspacem  38: anon 003560a000-003560ffff   24576 rw---
+--16412:0: aspacem  39: file 0035610000-0035614fff   20480 r-xT- d=0x801 i=33631204 o=0       (10,494)
+--16412:0: aspacem  40: file 0035615000-0035814fff 2097152 ----- d=0x801 i=33631204 o=20480   (10,494)
+--16412:0: aspacem  41: file 0035815000-0035815fff    4096 r---- d=0x801 i=33631204 o=20480   (10,494)
+--16412:0: aspacem  42: file 0035816000-0035816fff    4096 rw--- d=0x801 i=33631204 o=24576   (10,494)
+--16412:0: aspacem  43: file 0035817000-003582cfff   90112 r-xT- d=0x801 i=33647467 o=0       (11,528)
+--16412:0: aspacem  44: file 003582d000-0035a2bfff 2093056 ----- d=0x801 i=33647467 o=90112   (11,528)
+--16412:0: aspacem  45: file 0035a2c000-0035a2cfff    4096 r---- d=0x801 i=33647467 o=86016   (11,528)
+--16412:0: aspacem  46: file 0035a2d000-0035a2dfff    4096 rw--- d=0x801 i=33647467 o=90112   (11,528)
+--16412:0: aspacem  47: anon 0035a2e000-0035a2ffff    8192 rw---
+--16412:0: aspacem  48:      0035a30000-0037ffffff     37m
+--16412:0: aspacem  49: FILE 0038000000-003809dfff  647168 r-x-- d=0x03b i=80979355 o=0       (0,4)
+--16412:0: aspacem  50: file 003809e000-003809efff    4096 r-xT- d=0x03b i=80979355 o=647168  (0,4)
+--16412:0: aspacem  51: FILE 003809f000-0038221fff 1585152 r-x-- d=0x03b i=80979355 o=651264  (0,4)
+--16412:0: aspacem  52:      0038222000-0038421fff 2097152
+--16412:0: aspacem  53: FILE 0038422000-0038424fff   12288 rw--- d=0x03b i=80979355 o=2236416 (0,4)
+--16412:0: aspacem  54: ANON 0038425000-00395dafff     17m rw---
+--16412:0: aspacem  55:      00395db000-0801ffffff  31882m
+--16412:0: aspacem  56: RSVN 0802000000-0802000fff    4096 ----- SmFixed
+--16412:0: aspacem  57: ANON 0802001000-0802f83fff     15m rwx--
+--16412:0: aspacem  58: ANON 0802f84000-0802f85fff    8192 -----
+--16412:0: aspacem  59: ANON 0802f86000-0803085fff 1048576 rwx--
+--16412:0: aspacem  60: ANON 0803086000-0803087fff    8192 -----
+--16412:0: aspacem  61: FILE 0803088000-0803088fff    4096 rw--- d=0x802 i=12474   o=0       (3,166)
+--16412:0: aspacem  62: ANON 0803089000-080317efff 1007616 rwx--
+--16412:0: aspacem  63:      080317f000-0803180fff    8192
+--16412:0: aspacem  64: ANON 0803181000-0805af3fff     41m rwx--
+--16412:0: aspacem  65:      0805af4000-0805af4fff    4096
+--16412:0: aspacem  66: ANON 0805af5000-0805edafff 4087808 rwx--
+--16412:0: aspacem  67:      0805edb000-0805eddfff   12288
+--16412:0: aspacem  68: ANON 0805ede000-080cc35fff    109m rwx--
+--16412:0: aspacem  69:      080cc36000-0ffe800fff  32539m
+--16412:0: aspacem  70: RSVN 0ffe801000-0ffef07fff 7368704 ----- SmUpper
+--16412:0: aspacem  71: anon 0ffef08000-0fff000fff 1019904 rw---
+--16412:0: aspacem  72:      0fff001000-0fffffffff     15m
+--16412:0: aspacem  73: RSVN 1000000000-7ffd670b4fff 130997g ----- SmFixed
+--16412:0: aspacem  74: ANON 7ffd670b5000-7ffd670d5fff  135168 rw---
+--16412:0: aspacem  75: RSVN 7ffd670d6000-ffffffffff5fffff  16383e ----- SmFixed
+--16412:0: aspacem  76: ANON ffffffffff600000-ffffffffff600fff    4096 r-x--
+--16412:0: aspacem  77: RSVN ffffffffff601000-ffffffffffffffff      9m ----- SmFixed
+--16412:0: aspacem >>>
+--16412-- core    :     8,388,608/    8,388,608 max/curr mmap'd, 0/0 unsplit/split sb unmmap'd,      3,976,720/    3,850,592 max/curr,       31522/  28327344 totalloc-blocks/bytes,       31888 searches 8 rzB
+--16412-- dinfo   :    20,729,856/   13,656,064 max/curr mmap'd, 1/9 unsplit/split sb unmmap'd,     19,617,040/    9,691,472 max/curr,      321696/  70569872 totalloc-blocks/bytes,      327490 searches 8 rzB
+--16412-- client  :   804,225,024/  804,225,024 max/curr mmap'd, 0/0 unsplit/split sb unmmap'd,    800,111,584/  800,111,584 max/curr,         661/ 800111584 totalloc-blocks/bytes,         660 searches 24 rzB
+--16412-- demangle:        65,536/       65,536 max/curr mmap'd, 0/0 unsplit/split sb unmmap'd,            176/          128 max/curr,           7/       272 totalloc-blocks/bytes,           6 searches 8 rzB
+--16412-- ttaux   :       221,184/      221,184 max/curr mmap'd, 0/1 unsplit/split sb unmmap'd,        167,600/      113,760 max/curr,         668/    298912 totalloc-blocks/bytes,         665 searches 8 rzB
+--16412-- translate:            fast SP updates identified: 3,567 (90.9%)
+--16412-- translate:   generic_known SP updates identified: 246 (6.3%)
+--16412-- translate: generic_unknown SP updates identified: 109 (2.8%)
+--16412-- translate: PX: SPonly 0,  UnwRegs 3,982,  AllRegs 0,  AllRegsAllInsns 0
+--16412--     tt/tc: 9,085 tt lookups requiring 9,357 probes
+--16412--     tt/tc: 5,171 fast-cache updates, 5 flushes
+--16412--  transtab: new        3,971 (89,433 -> 1,459,543; ratio 16.3) [0 scs] avg tce size 367
+--16412--  transtab: dumped     0 (0 -> ??) (sectors recycled 0)
+--16412--  transtab: discarded  11 (295 -> ??)
+--16412-- scheduler: 638,500,000 event checks.
+--16412-- scheduler: 34,706,582 indir transfers, 1,097 misses (1 in 31637)
+--16412-- scheduler: 6,385/2,029,720 major/minor sched events.
+--16412--    sanity: 6385 cheap, 92 expensive checks.
+--16412--    exectx: 769 lists, 75 contexts (avg 0.10 per list) (avg 1.11 IP per context)
+--16412--    exectx: 1,046 searches, 980 full compares (936 per 1000)
+--16412--    exectx: 0 cmp2, 15 cmp4, 0 cmpAll
+--16412--  errormgr: 6 supplist searches, 30 comparisons during search
+--16412--  errormgr: 6 errlist searches, 15 comparisons during search
+--16412--  memcheck: freelist: vol 61329 length 377
+--16412--  memcheck: sanity checks: 6385 cheap, 93 expensive
+--16412--  memcheck: auxmaps: 0 auxmap entries (0k, 0M) in use
+--16412--  memcheck: auxmaps_L1: 0 searches, 0 cmps, ratio 0:10
+--16412--  memcheck: auxmaps_L2: 0 searches, 0 nodes
+--16412--  memcheck: SMs: n_issued      = 7489 (119824k, 117M)
+--16412--  memcheck: SMs: n_deissued    = 16 (256k, 0M)
+--16412--  memcheck: SMs: max_noaccess  = 1048575 (16777200k, 16383M)
+--16412--  memcheck: SMs: max_undefined = 12180 (194880k, 190M)
+--16412--  memcheck: SMs: max_defined   = 285 (4560k, 4M)
+--16412--  memcheck: SMs: max_non_DSM   = 7473 (119568k, 116M)
+--16412--  memcheck: max sec V bit nodes:    3 (0k, 0M)
+--16412--  memcheck: set_sec_vbits8 calls: 127 (new: 3, updates: 124)
+--16412--  memcheck: max shadow mem size:   127808k, 124M
+
+host stacktrace:
+==16412==    at 0x38083EF8: show_sched_status_wrk (m_libcassert.c:343)
+==16412==    by 0x3809163B: vgPlain_out_of_memory_NORETURN (m_mallocfree.c:791)
+==16412==    by 0x3805326A: copy_for_writing (mc_main.c:308)
+==16412==    by 0x38058494: get_secmap_for_writing_low (mc_main.c:635)
+==16412==    by 0x38058494: get_secmap_for_writing (mc_main.c:670)
+==16412==    by 0x38058494: set_vabits2 (mc_main.c:736)
+==16412==    by 0x38058494: set_vbits8 (mc_main.c:790)
+==16412==    by 0x38058494: mc_STOREVn_slow (mc_main.c:1537)
+==16412==    by 0x803315564: ???
+==16412==    by 0x803085F2F: ???
+
+sched status:
+  running_tid=1
+
+Thread 1: status = VgTs_Runnable (lwpid 16412)
+==16412==    at 0x4C3013F: memset (vg_replace_strmem.c:1224)
+==16412==    by 0x403EC2: limit_clear (bandwidth.c:145)
+==16412==    by 0x403CDE: limit_write (bandwidth.c:108)
+==16412==    by 0x401184: main (server.c:160)
+client stack range: [0xFFEF08000 0xFFF000FFF] client SP: 0xFFEF0BB70
+valgrind stack top usage: 11784 of 1048576
+
+==16412== 
+==16412==     Valgrind's memory management: out of memory:
+==16412==        memcheck:allocate new SecMap's request for 16384 bytes failed.
+==16412==        1,004,584,960 bytes have already been mmap-ed ANONYMOUS.
+==16412==     Valgrind cannot continue.  Sorry.
+==16412== 
+==16412==     There are several possible reasons for this.
+==16412==     - You have some kind of memory limit in place.  Look at the
+==16412==       output of 'ulimit -a'.  Is there a limit on the size of
+==16412==       virtual memory or address space?
+==16412==     - You have run out of swap space.
+==16412==     - Valgrind has a bug.  If you think this is the case or you are
+==16412==     not sure, please let us know and we'll try to fix it.
+==16412==     Please note that programs can take substantially more memory than
+==16412==     normal when running under Valgrind tools, eg. up to twice or
+==16412==     more, depending on the tool.  On a 64-bit machine, Valgrind
+==16412==     should be able to make use of up 32GB memory.  On a 32-bit
+==16412==     machine, Valgrind should be able to use all the memory available
+==16412==     to a single process, up to 4GB if that's how you have your
+==16412==     kernel configured.  Most 32-bit Linux setups allow a maximum of
+==16412==     3GB per process.
+==16412== 
+==16412==     Whatever the reason, Valgrind cannot continue.  Sorry.
